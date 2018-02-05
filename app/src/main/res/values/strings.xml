@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">My First Application</string>
     <string name="card1">Card 1</string>
+    <string name="card2">Card 2</string>
+    <string name="card3">Card 3</string>
+    <string name="player1">Player 1</string>
+    <string name="player2">Player 2</string>
 </resources>
