@@ -5,4 +5,5 @@
     <string name="card3">Card 3</string>
     <string name="player1">Player 1</string>
     <string name="player2">Player 2</string>
+    <string name="remaining">Cards Remaining</string>
 </resources>
