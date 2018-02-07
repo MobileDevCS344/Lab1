@@ -1,5 +1,6 @@
 package com.example.yangm89.myfirstapplication;
 
+import android.content.res.Configuration;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.WindowManager;
