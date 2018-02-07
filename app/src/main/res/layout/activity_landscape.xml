@@ -1,6 +1,113 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
+
+    <HorizontalScrollView
+        android:id="@+id/cardCont"
+        android:layout_width="409dp"
+        android:layout_height="171dp"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="8dp">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:weightSum="1">
+
+            <EditText
+                android:id="@+id/card1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:text="@string/card1" />
+
+            <EditText
+                android:id="@+id/card2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:text="@string/card2" />
+
+            <EditText
+                android:id="@+id/card3"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:text="@string/card3" />
+        </LinearLayout>
+    </HorizontalScrollView>
+
+    <LinearLayout
+        android:id="@+id/cardPlayedCont"
+        android:layout_width="207dp"
+        android:layout_height="74dp"
+        android:layout_marginLeft="8dp"
+        android:orientation="horizontal"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginBottom="5dp"
+        app:layout_constraintBottom_toTopOf="@+id/cardCont"
+        tools:layout_editor_absoluteY="52dp">
+
+        <EditText
+            android:id="@+id/editText6"
+            android:layout_width="101dp"
+            android:layout_height="match_parent"
+            android:ems="10"
+            android:inputType="textMultiLine|textPersonName"
+            android:text="@string/p1card" />
+
+        <EditText
+            android:id="@+id/editText5"
+            android:layout_width="104dp"
+            android:layout_height="match_parent"
+            android:ems="10"
+            android:inputType="textMultiLine|textPersonName"
+            android:singleLine="false"
+            android:text="@string/p2card" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/cardPlaydHeaderCont"
+        android:layout_width="208dp"
+        android:layout_height="44dp"
+        android:layout_marginBottom="0dp"
+        android:layout_marginLeft="7dp"
+        android:layout_marginTop="8dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/cardPlayedCont"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
+
+        <EditText
+            android:id="@+id/editText4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:text="@string/player1" />
+
+        <EditText
+            android:id="@+id/editText3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:text="@string/player2" />
+    </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>
