@@ -32,20 +32,26 @@
 
             <EditText
                 android:id="@+id/card2"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:ems="10"
-                android:inputType="textPersonName"
-                android:text="@string/card2" />
-
-            <EditText
-                android:id="@+id/card3"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_width="0dp"
+                android:layout_height="295dp"
                 android:layout_weight="1"
                 android:ems="10"
                 android:inputType="textPersonName"
-                android:text="@string/card3" />
+                android:text="@string/card2"
+                tools:layout_editor_absoluteX="8dp"
+                tools:layout_editor_absoluteY="8dp" />
+
+            <EditText
+                android:id="@+id/card3"
+                android:layout_width="0dp"
+                android:layout_height="295dp"
+                android:layout_weight="1"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:text="@string/card3"
+                tools:layout_editor_absoluteX="-307dp"
+                tools:layout_editor_absoluteY="-114dp" />
+
         </LinearLayout>
     </HorizontalScrollView>
 
@@ -58,7 +64,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         android:layout_marginBottom="5dp"
         app:layout_constraintBottom_toTopOf="@+id/cardCont"
-        tools:layout_editor_absoluteY="52dp">
+        android:layout_marginStart="8dp">
 
         <EditText
             android:id="@+id/editText6"
@@ -82,14 +88,14 @@
         android:id="@+id/cardPlaydHeaderCont"
         android:layout_width="208dp"
         android:layout_height="44dp"
-        android:layout_marginBottom="0dp"
         android:layout_marginLeft="7dp"
         android:layout_marginTop="8dp"
         android:orientation="horizontal"
         app:layout_constraintBottom_toTopOf="@+id/cardPlayedCont"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintVertical_bias="0.0"
+        android:layout_marginStart="7dp">
 
         <EditText
             android:id="@+id/editText4"
@@ -109,5 +115,168 @@
             android:inputType="textPersonName"
             android:text="@string/player2" />
     </LinearLayout>
+
+    <TableLayout
+        android:id="@+id/scoreTable"
+        android:layout_width="134dp"
+        android:layout_height="45dp"
+        android:layout_marginLeft="29dp"
+        android:layout_marginStart="22dp"
+        android:background="@android:color/darker_gray"
+        app:layout_constraintLeft_toRightOf="@+id/cardCont"
+        tools:layout_editor_absoluteY="165dp">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/p1ScoreLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/player1" />
+
+            <TextView
+                android:id="@+id/p1Score"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/p1Score"
+                android:textAlignment="center" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/p2ScoreLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/player2" />
+
+            <TextView
+                android:id="@+id/p2Score"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/p1Score"
+                android:textAlignment="center" />
+        </TableRow>
+
+    </TableLayout>
+
+    <EditText
+        android:id="@+id/score"
+        android:layout_width="134dp"
+        android:layout_height="43dp"
+        android:layout_marginLeft="22dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="@string/score"
+        android:textAlignment="center"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/scoreTable"
+        app:layout_constraintLeft_toRightOf="@+id/cardCont"
+        android:layout_marginStart="22dp"
+        android:layout_marginBottom="0dp"
+        tools:layout_editor_absoluteY="122dp" />
+
+    <EditText
+        android:id="@+id/cardRem"
+        android:layout_width="134dp"
+        android:layout_height="44dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="@string/remaining"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toRightOf="@+id/cardCont"
+        android:layout_marginLeft="25dp"
+        app:layout_constraintBottom_toTopOf="@+id/cardRemaingTable"
+        android:layout_marginStart="22dp"
+        android:layout_marginBottom="0dp" />
+
+    <TableLayout
+        android:id="@+id/cardRemaingTable"
+        android:layout_width="134dp"
+        android:layout_height="40dp"
+        app:layout_constraintLeft_toRightOf="@+id/cardCont"
+        android:layout_marginLeft="22dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="8dp">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/p1CardRemLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/player1" />
+
+            <TextView
+                android:id="@+id/p1CardRem"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TextView" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:layout_editor_absoluteX="8dp"
+            tools:layout_editor_absoluteY="8dp">
+
+            <TextView
+                android:id="@+id/p2CardRemLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/player2" />
+
+            <TextView
+                android:id="@+id/p2CardRem"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TextView" />
+        </TableRow>
+
+    </TableLayout>
+
+    <EditText
+        android:id="@+id/chatHist"
+        android:layout_width="188dp"
+        android:layout_height="118dp"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:inputType="textMultiLine|textPersonName"
+        android:text="@string/chatHist"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/send"
+        android:layout_marginRight="-8dp" />
+
+    <EditText
+        android:id="@+id/chat"
+        android:layout_width="159dp"
+        android:layout_height="65dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:inputType="textAutoCorrect|textAutoComplete|textMultiLine|textPersonName"
+        android:text="@string/initChat"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintLeft_toRightOf="@+id/chatHist"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/send"
+        android:layout_width="161dp"
+        android:layout_height="35dp"
+        android:text="@string/sendBtn"
+        tools:layout_editor_absoluteX="423dp"
+        tools:layout_editor_absoluteY="73dp" />
 
 </android.support.constraint.ConstraintLayout>
