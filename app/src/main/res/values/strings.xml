@@ -6,4 +6,8 @@
     <string name="player1">Player 1</string>
     <string name="player2">Player 2</string>
     <string name="remaining">Cards Remaining</string>
+    <string name="score">Score</string>
+    <string name="p1card">Player 1 Card</string>
+    <string name="p2card">Player 2 Card</string>
+    <string name="p1Score">0</string>
 </resources>
