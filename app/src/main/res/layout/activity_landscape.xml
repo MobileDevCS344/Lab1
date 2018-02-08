@@ -1,282 +1,320 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/p2Label"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <HorizontalScrollView
-        android:id="@+id/cardCont"
-        android:layout_width="409dp"
-        android:layout_height="171dp"
-        android:layout_marginLeft="8dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
+    <LinearLayout
+        android:id="@+id/playCont"
+        android:layout_width="213dp"
+        android:layout_height="121dp"
         android:layout_marginBottom="8dp"
-        android:layout_marginStart="8dp">
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/hand"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:layout_height="28dp"
             android:orientation="horizontal"
-            android:weightSum="1">
-
-            <EditText
-                android:id="@+id/card1"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:ems="10"
-                android:inputType="textPersonName"
-                android:text="@string/card1" />
-
-            <EditText
-                android:id="@+id/card2"
-                android:layout_width="0dp"
-                android:layout_height="295dp"
-                android:layout_weight="1"
-                android:ems="10"
-                android:inputType="textPersonName"
-                android:text="@string/card2"
-                tools:layout_editor_absoluteX="8dp"
-                tools:layout_editor_absoluteY="8dp" />
-
-            <EditText
-                android:id="@+id/card3"
-                android:layout_width="0dp"
-                android:layout_height="295dp"
-                android:layout_weight="1"
-                android:ems="10"
-                android:inputType="textPersonName"
-                android:text="@string/card3"
-                tools:layout_editor_absoluteX="-307dp"
-                tools:layout_editor_absoluteY="-114dp" />
-
-        </LinearLayout>
-    </HorizontalScrollView>
-
-    <LinearLayout
-        android:id="@+id/cardPlayedCont"
-        android:layout_width="207dp"
-        android:layout_height="74dp"
-        android:layout_marginLeft="8dp"
-        android:orientation="horizontal"
-        app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginBottom="5dp"
-        app:layout_constraintBottom_toTopOf="@+id/cardCont"
-        android:layout_marginStart="8dp">
-
-        <EditText
-            android:id="@+id/editText6"
-            android:layout_width="101dp"
-            android:layout_height="match_parent"
-            android:ems="10"
-            android:inputType="textMultiLine|textPersonName"
-            android:text="@string/p1card" />
-
-        <EditText
-            android:id="@+id/editText5"
-            android:layout_width="104dp"
-            android:layout_height="match_parent"
-            android:ems="10"
-            android:inputType="textMultiLine|textPersonName"
-            android:singleLine="false"
-            android:text="@string/p2card" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/cardPlaydHeaderCont"
-        android:layout_width="208dp"
-        android:layout_height="44dp"
-        android:layout_marginLeft="7dp"
-        android:layout_marginTop="8dp"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toTopOf="@+id/cardPlayedCont"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"
-        android:layout_marginStart="7dp">
-
-        <EditText
-            android:id="@+id/editText4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:ems="10"
-            android:inputType="textPersonName"
-            android:text="@string/player1" />
-
-        <EditText
-            android:id="@+id/editText3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:ems="10"
-            android:inputType="textPersonName"
-            android:text="@string/player2" />
-    </LinearLayout>
-
-    <TableLayout
-        android:id="@+id/scoreTable"
-        android:layout_width="134dp"
-        android:layout_height="45dp"
-        android:layout_marginLeft="29dp"
-        android:layout_marginStart="22dp"
-        android:background="@android:color/darker_gray"
-        app:layout_constraintLeft_toRightOf="@+id/cardCont"
-        tools:layout_editor_absoluteY="165dp">
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <TextView
-                android:id="@+id/p1ScoreLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/player1" />
-
-            <TextView
-                android:id="@+id/p1Score"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/p1Score"
-                android:textAlignment="center" />
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <TextView
-                android:id="@+id/p2ScoreLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/player2" />
-
-            <TextView
-                android:id="@+id/p2Score"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/p1Score"
-                android:textAlignment="center" />
-        </TableRow>
-
-    </TableLayout>
-
-    <EditText
-        android:id="@+id/score"
-        android:layout_width="134dp"
-        android:layout_height="43dp"
-        android:layout_marginLeft="22dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text="@string/score"
-        android:textAlignment="center"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/scoreTable"
-        app:layout_constraintLeft_toRightOf="@+id/cardCont"
-        android:layout_marginStart="22dp"
-        android:layout_marginBottom="0dp"
-        tools:layout_editor_absoluteY="122dp" />
-
-    <EditText
-        android:id="@+id/cardRem"
-        android:layout_width="134dp"
-        android:layout_height="44dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text="@string/remaining"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintLeft_toRightOf="@+id/cardCont"
-        android:layout_marginLeft="25dp"
-        app:layout_constraintBottom_toTopOf="@+id/cardRemaingTable"
-        android:layout_marginStart="22dp"
-        android:layout_marginBottom="0dp" />
-
-    <TableLayout
-        android:id="@+id/cardRemaingTable"
-        android:layout_width="134dp"
-        android:layout_height="40dp"
-        app:layout_constraintLeft_toRightOf="@+id/cardCont"
-        android:layout_marginLeft="22dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="8dp">
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <TextView
-                android:id="@+id/p1CardRemLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/player1" />
-
-            <TextView
-                android:id="@+id/p1CardRem"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="TextView" />
-
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
             tools:layout_editor_absoluteX="8dp"
             tools:layout_editor_absoluteY="8dp">
 
             <TextView
-                android:id="@+id/p2CardRemLabel"
+                android:id="@+id/p1Label"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/player2" />
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="@string/player1" />
 
             <TextView
-                android:id="@+id/p2CardRem"
+                android:id="@+id/textView8"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="TextView" />
-        </TableRow>
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="@string/player2" />
+        </LinearLayout>
 
-    </TableLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="horizontal">
 
-    <EditText
-        android:id="@+id/chatHist"
-        android:layout_width="188dp"
-        android:layout_height="118dp"
+            <TextView
+                android:id="@+id/p1Play"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="@string/p1card" />
+
+            <TextView
+                android:id="@+id/p2Play"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="@string/p2card" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/chatCont"
+        android:layout_width="216dp"
+        android:layout_height="256dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="16dp"
         android:layout_marginTop="8dp"
-        android:ems="10"
-        android:inputType="textMultiLine|textPersonName"
-        android:text="@string/chatHist"
+        android:orientation="vertical"
+        android:weightSum="1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintRight_toLeftOf="@+id/send"
-        android:layout_marginRight="-8dp" />
+        app:layout_constraintVertical_bias="0.119">
 
-    <EditText
-        android:id="@+id/chat"
-        android:layout_width="159dp"
-        android:layout_height="65dp"
+        <TextView
+            android:id="@+id/chatHist"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.79"
+            android:text="@string/chatHist" />
+
+        <EditText
+            android:id="@+id/chatMsg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.24"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:text="@string/initChat" />
+
+        <Button
+            android:id="@+id/chatSendBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/sendBtn" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/scoreCont"
+        android:layout_width="294dp"
+        android:layout_height="49dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        android:layout_marginTop="8dp"
-        android:ems="10"
-        android:inputType="textAutoCorrect|textAutoComplete|textMultiLine|textPersonName"
-        android:text="@string/initChat"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintLeft_toRightOf="@+id/chatHist"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_marginStart="8dp"
+        android:orientation="horizontal"
+        android:weightSum="1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.469"
+        app:layout_constraintLeft_toRightOf="@+id/remainCont"
+        app:layout_constraintRight_toRightOf="parent">
 
-    <Button
-        android:id="@+id/send"
-        android:layout_width="161dp"
-        android:layout_height="35dp"
-        android:text="@string/sendBtn"
-        tools:layout_editor_absoluteX="423dp"
-        tools:layout_editor_absoluteY="73dp" />
+        <TextView
+            android:id="@+id/score"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="@string/score"
+            android:textAlignment="center"
+            android:textSize="18sp"
+            android:typeface="sans" />
+
+        <TableLayout
+            android:id="@+id/scoreTable"
+            android:layout_width="179dp"
+            android:layout_height="match_parent"
+            android:background="@android:color/darker_gray"
+            tools:layout_editor_absoluteX="8dp"
+            tools:layout_editor_absoluteY="8dp">
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/p1ScoreLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/player1" />
+
+                <TextView
+                    android:id="@+id/p1Score"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/p1Score"
+                    android:textAlignment="center" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/p2ScoreLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/player2" />
+
+                <TextView
+                    android:id="@+id/p2Score"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/p1Score"
+                    android:textAlignment="center" />
+            </TableRow>
+
+        </TableLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/mathwar"
+        android:layout_width="204dp"
+        android:layout_height="126dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="223dp"
+        android:layout_marginTop="10dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/hand"
+        app:layout_constraintLeft_toLeftOf="@+id/playCont"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
+
+        <TextView
+            android:id="@+id/mathProb"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/mathWar" />
+
+        <EditText
+            android:id="@+id/answer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="number"
+            android:text="@string/answer"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+        <Button
+            android:id="@+id/mathSendBtn"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:text="@string/sendBtn" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/remainCont"
+        android:layout_width="259dp"
+        android:layout_height="49dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="29dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/hand">
+
+        <TextView
+            android:id="@+id/cardRem"
+            android:layout_width="130dp"
+            android:layout_height="match_parent"
+            android:text="@string/remaining"
+            android:textSize="18sp" />
+
+        <TableLayout
+            android:id="@+id/cardRemaingTable"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="7dp"
+            android:layout_weight="1"
+            android:background="@android:color/background_light"
+            android:padding="2dp"
+            android:paddingRight="5dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:layout_editor_absoluteX="8dp">
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/p1CardRemLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/player1" />
+
+                <TextView
+                    android:id="@+id/p1CardRem"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/cardRem" />
+
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:layout_editor_absoluteX="8dp"
+                tools:layout_editor_absoluteY="8dp">
+
+                <TextView
+                    android:id="@+id/p2CardRemLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/player2" />
+
+                <TextView
+                    android:id="@+id/p2CardRem"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/cardRem" />
+            </TableRow>
+
+        </TableLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/hand"
+        android:layout_width="435dp"
+        android:layout_height="130dp"
+        android:layout_marginBottom="67dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        android:orientation="horizontal"
+        android:weightSum="1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent">
+
+        <TextView
+            android:id="@+id/card1"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="0.33"
+            android:text="@string/card1" />
+
+        <TextView
+            android:id="@+id/card2"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="0.33"
+            android:text="@string/card2" />
+
+        <TextView
+            android:id="@+id/card3"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="0.33"
+            android:text="@string/card3" />
+    </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>

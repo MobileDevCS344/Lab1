@@ -3,8 +3,8 @@
     <string name="card1">Card 1</string>
     <string name="card2">Card 2</string>
     <string name="card3">Card 3</string>
-    <string name="player1">Player 1</string>
-    <string name="player2">Player 2</string>
+    <string name="player1">Player 1:</string>
+    <string name="player2">Player 2:</string>
     <string name="remaining">Cards Remaining</string>
     <string name="score">Score</string>
     <string name="p1card">Player 1 Card</string>
@@ -13,4 +13,7 @@
     <string name="sendBtn">Send</string>
     <string name="initChat">Type Message Here</string>
     <string name="chatHist">Chat History</string>
+    <string name="mathWar">Math War (Ex: 10 * 7)</string>
+    <string name="answer">Answer</string>
+    <string name="cardRem">26</string>
 </resources>
