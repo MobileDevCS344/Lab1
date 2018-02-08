@@ -104,73 +104,6 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/cardRem"
-        android:layout_width="357dp"
-        android:layout_height="46dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginRight="14dp"
-        android:layout_marginTop="8dp"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cardCont"
-        app:layout_constraintVertical_bias="0.2"
-        android:weightSum="1"
-        android:layout_marginEnd="14dp"
-        tools:layout_editor_absoluteY="449dp">
-
-        <TextView
-            android:id="@+id/cardRem"
-            android:layout_width="109dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1.67"
-            android:text="@string/remaining"
-            android:textAlignment="center"
-            android:textSize="16sp"
-            android:textStyle="bold" />
-
-        <TableLayout
-            android:id="@+id/cardRemaingTable"
-            android:layout_width="227dp"
-            android:layout_height="match_parent">
-
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" >
-
-                <TextView
-                    android:id="@+id/p1CardRemLabel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/player1" />
-
-                <TextView
-                    android:id="@+id/p1CardRem"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/cardRem" />
-            </TableRow>
-
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" >
-
-                <TextView
-                    android:id="@+id/p1CardRemLabel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/player2" />
-
-                <TextView
-                    android:id="@+id/p2CardRem"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/cardRem" />
-            </TableRow>
-        </TableLayout>
-    </LinearLayout>
-
-    <LinearLayout
         android:id="@+id/cardPlayed"
         android:layout_width="148dp"
         android:layout_height="147dp"
@@ -256,6 +189,72 @@
             android:layout_height="wrap_content"
             android:text="@string/sendBtn" />
 
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/cardRemCont"
+        android:layout_width="357dp"
+        android:layout_height="46dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="14dp"
+        android:layout_marginRight="12dp"
+        android:layout_marginTop="8dp"
+        android:orientation="horizontal"
+        android:weightSum="1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cardCont"
+        app:layout_constraintVertical_bias="0.0">
+
+        <TextView
+            android:id="@+id/cardRem"
+            android:layout_width="137dp"
+            android:layout_height="match_parent"
+
+            android:text="@string/remaining"
+            android:textAlignment="center"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TableLayout
+            android:id="@+id/cardRemaingTable"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/p1CardRemLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/player1" />
+
+                <TextView
+                    android:id="@+id/p1CardRem"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/cardRem" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/p2CardRemLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/player2" />
+
+                <TextView
+                    android:id="@+id/p2CardRem"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/cardRem" />
+            </TableRow>
+        </TableLayout>
     </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>
