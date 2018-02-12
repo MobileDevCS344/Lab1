@@ -18,7 +18,7 @@
         android:layout_marginEnd="16dp">
 
         <TextView
-            android:id="@+id/score"
+            android:id="@+id/textView_score"
             android:layout_width="match_parent"
             android:layout_height="34dp"
             android:text="@string/score"
@@ -37,13 +37,13 @@
                 android:layout_height="match_parent">
 
                 <TextView
-                    android:id="@+id/p1ScoreLabel"
+                    android:id="@+id/textView_p1ScoreLabel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/player1" />
 
                 <TextView
-                    android:id="@+id/p1Score"
+                    android:id="@+id/textView_p1Score"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/p1Score" />
@@ -54,16 +54,17 @@
                 android:layout_height="match_parent">
 
                 <TextView
-                    android:id="@+id/p2Score"
+                    android:id="@+id/textView_p2ScoreLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/player2" />
+
+                <TextView
+                    android:id="@+id/textView_p2Score"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/p1Score" />
 
-                <TextView
-                    android:id="@+id/p2ScoreLabel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/player2" />
             </TableRow>
 
         </TableLayout>
@@ -82,21 +83,21 @@
         android:layout_marginEnd="14dp">
 
         <TextView
-            android:id="@+id/card1"
+            android:id="@+id/textView_card1"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="0.33"
             android:text="@string/card1" />
 
         <TextView
-            android:id="@+id/card2"
+            android:id="@+id/textView_card2"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="0.33"
             android:text="@string/card2" />
 
         <TextView
-            android:id="@+id/card3"
+            android:id="@+id/textView_card3"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="0.33"
@@ -122,14 +123,14 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/p1Label"
+                android:id="@+id/textView_p1Label"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:text="@string/player1" />
 
             <TextView
-                android:id="@+id/p2Label"
+                android:id="@+id/textView_p2Label"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -142,14 +143,14 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/p1Play"
+                android:id="@+id/textView_p1Play"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:text="@string/p1card" />
 
             <TextView
-                android:id="@+id/p2Play"
+                android:id="@+id/textView_p2Play"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -173,7 +174,7 @@
         app:layout_constraintVertical_bias="0.0">
 
         <TextView
-            android:id="@+id/cardRem"
+            android:id="@+id/textView_cardRem"
             android:layout_width="137dp"
             android:layout_height="match_parent"
 
@@ -192,13 +193,13 @@
                 android:layout_height="match_parent">
 
                 <TextView
-                    android:id="@+id/p1CardRemLabel"
+                    android:id="@+id/textView_p1CardRemLabel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/player1" />
 
                 <TextView
-                    android:id="@+id/p1CardRem"
+                    android:id="@+id/textView_p1CardRem"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/cardRem" />
@@ -215,7 +216,7 @@
                     android:text="@string/player2" />
 
                 <TextView
-                    android:id="@+id/p2CardRem"
+                    android:id="@+id/textView_p2CardRem"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/cardRem" />
@@ -235,7 +236,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/mathProb"
+            android:id="@+id/textView_mathProb"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1.81"
@@ -243,7 +244,7 @@
             tools:ignore="InefficientWeight" />
 
         <EditText
-            android:id="@+id/answer"
+            android:id="@+id/editText_answer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ems="10"
@@ -251,7 +252,7 @@
             android:text="@string/answer" />
 
         <Button
-            android:id="@+id/mathSendBtn"
+            android:id="@+id/button_mathSend"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/sendBtn" />
