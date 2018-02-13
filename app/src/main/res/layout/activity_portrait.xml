@@ -88,6 +88,7 @@
             android:layout_height="wrap_content"
             android:layout_weight=".333"
             android:contentDescription="@string/card1"
+            android:onClick="changeBackground"
             app:srcCompat="@color/colorAccent" />
 
         <ImageView
@@ -96,6 +97,7 @@
             android:layout_height="wrap_content"
             android:layout_weight=".333"
             android:contentDescription="@string/card2"
+            android:onClick="changeBackground"
             app:srcCompat="@color/colorAccent" />
 
         <ImageView
@@ -104,6 +106,7 @@
             android:layout_height="wrap_content"
             android:layout_weight=".333"
             android:contentDescription="@string/card3"
+            android:onClick="changeBackground"
             app:srcCompat="@color/colorPrimary" />
     </LinearLayout>
 
