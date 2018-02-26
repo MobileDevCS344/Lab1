@@ -4,4 +4,5 @@
     <color name="colorPrimaryDark">#303f9f</color>
     <color name="colorAccent">#486f28</color>
     <color name="cardBackgroundSkyBlue">#87ceeb</color>
+    <color name="transparent">#00000000</color>
 </resources>
