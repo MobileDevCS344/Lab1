@@ -304,9 +304,10 @@
             android:layout_height="wrap_content"
             android:layout_weight=".333"
 
-            android:contentDescription="@string/card1"
-            android:onClick="onclick"
+            android:clickable="true"
 
+            android:contentDescription="@string/card1"
+            android:onClick="selectCard"
             app:srcCompat="@color/colorAccent" />
 
         <ImageView
@@ -316,7 +317,7 @@
             android:layout_weight=".333"
 
             android:contentDescription="@string/card2"
-            android:onClick="onclick"
+            android:onClick="selectCard"
 
             app:srcCompat="@color/colorPrimary" />
 
@@ -327,7 +328,7 @@
             android:layout_weight=".333"
 
             android:contentDescription="@string/card3"
-            android:onClick="onclick"
+            android:onClick="selectCard"
 
             app:srcCompat="@color/colorAccent" />
     </LinearLayout>

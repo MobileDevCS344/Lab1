@@ -89,7 +89,7 @@
             android:layout_weight=".333"
             android:contentDescription="@string/card1"
 
-            android:onClick="onclick"
+            android:onClick="selectCard"
 
             app:srcCompat="@color/colorAccent" />
 
@@ -100,7 +100,7 @@
             android:layout_weight=".333"
             android:contentDescription="@string/card2"
 
-            android:onClick="onclick"
+            android:onClick="selectCard"
 
             app:srcCompat="@color/colorAccent" />
 
@@ -111,7 +111,7 @@
             android:layout_weight=".333"
             android:contentDescription="@string/card3"
 
-            android:onClick="onclick"
+            android:onClick="selectCard"
 
             app:srcCompat="@color/colorPrimary" />
     </LinearLayout>
