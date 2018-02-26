@@ -1,9 +1,11 @@
 package com.example.yangm89.myfirstapplication;
 
 import android.content.res.Configuration;
+
 import android.content.res.TypedArray;
 import android.graphics.drawable.ColorDrawable;
 import android.media.Image;
+
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -15,6 +17,8 @@ import java.util.Random;
 
 
 public class MainActivity extends AppCompatActivity {
+
+
 
 
     @Override
@@ -29,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
         //this leaves the keyboard hidden on load
         getWindow().setSoftInputMode(
                 WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+
 
         //random image generator
         generateRandomImg();
@@ -75,16 +80,8 @@ public class MainActivity extends AppCompatActivity {
 
     public void generateRandomImg() {
         TypedArray cards = getResources().obtainTypedArray(R.array.my_cards);
-        Random r = new Random();
-        int randomIndexOne = r.nextInt(53);
-        int randomIndexTwo = r.nextInt(53);
-        while(randomIndexTwo == randomIndexOne){
-            randomIndexTwo = r.nextInt(53);
-        }
-        int randomIndexThree = r.nextInt(53);
-        while(randomIndexOne == randomIndexThree || randomIndexTwo == randomIndexThree){
-            randomIndexThree = r.nextInt(53);
-        }
+
+
 
         int rndImageC1 = cards.getResourceId(randomIndexOne, 0);
         int rndImageC2 = cards.getResourceId(randomIndexTwo, 0);
@@ -96,5 +93,7 @@ public class MainActivity extends AppCompatActivity {
         viewC1.setImageResource(rndImageC1);
         viewC2.setImageResource(rndImageC2);
         viewC3.setImageResource(rndImageC3);
+
+
     }
 }
