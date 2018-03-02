@@ -3,6 +3,7 @@ package com.example.yangm89.myfirstapplication;
 import android.content.res.Configuration;
 
 import android.content.res.TypedArray;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.media.Image;
 
@@ -49,114 +50,150 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         switch(v.getId()) {
             case R.id.imageView_card1:
-                c1.setBackgroundColor(ContextCompat.getColor(this, R.color.cardBackgroundSkyBlue));
-                if(((ColorDrawable)c2.getBackground()) != null) {
-                    c2.setBackgroundColor(ContextCompat.getColor(this, R.color.transparent));
+                if(((ColorDrawable)c1.getBackground()) != null ) {
+                    if(((ColorDrawable)c1.getBackground()).getColor() == 0){
+                        c1.setBackgroundColor(ContextCompat.getColor(this, R.color.cardBackgroundSkyBlue));
+                        if(((ColorDrawable)c2.getBackground()) != null) {
+                            c2.setBackgroundColor(ContextCompat.getColor(this, R.color.transparent));
+                        }
+                        if(((ColorDrawable)c3.getBackground()) != null) {
+                            c3.setBackgroundColor(ContextCompat.getColor(this, R.color.transparent));
+                        }
+                    }
+                    else {
+                        if(((ColorDrawable)c1.getBackground()).getColor() == getResources().getColor(R.color.cardBackgroundSkyBlue)) {
+                            ImageView table1 = (ImageView) findViewById(R.id.imageView_p1Play);
+                            ImageView table2 = (ImageView) findViewById(R.id.imageView_p2Play);
+                            if(table1.getDrawable() == null){
+                                table1.setImageDrawable(c1.getDrawable());
+                                c1.setImageResource(android.R.color.transparent);
+                            }
+                            else if(table2.getDrawable() == null){
+                                table2.setImageDrawable(c1.getDrawable());
+                                c1.setImageResource(android.R.color.transparent);
+                            }
+                        }
+                    }
                 }
-                if(((ColorDrawable)c3.getBackground()) != null) {
-                    c3.setBackgroundColor(ContextCompat.getColor(this, R.color.transparent));
+                else {
+                    c1.setBackgroundColor(ContextCompat.getColor(this, R.color.cardBackgroundSkyBlue));
+                    if(((ColorDrawable)c2.getBackground()) != null) {
+                        c2.setBackgroundColor(ContextCompat.getColor(this, R.color.transparent));
+                    }
+                    if(((ColorDrawable)c3.getBackground()) != null) {
+                        c3.setBackgroundColor(ContextCompat.getColor(this, R.color.transparent));
+                    }
                 }
+
                 break;
 
             case R.id.imageView_card2:
-                c2.setBackgroundColor(ContextCompat.getColor(this, R.color.cardBackgroundSkyBlue));
-                if(((ColorDrawable)c1.getBackground()) != null) {
-                    c1.setBackgroundColor(ContextCompat.getColor(this, R.color.transparent));
+                if(((ColorDrawable)c2.getBackground()) != null ) {
+                    if(((ColorDrawable)c2.getBackground()).getColor() == 0){
+                        c2.setBackgroundColor(ContextCompat.getColor(this, R.color.cardBackgroundSkyBlue));
+                        if(((ColorDrawable)c1.getBackground()) != null) {
+                            c1.setBackgroundColor(ContextCompat.getColor(this, R.color.transparent));
+                        }
+                        if(((ColorDrawable)c3.getBackground()) != null) {
+                            c3.setBackgroundColor(ContextCompat.getColor(this, R.color.transparent));
+                        }
+                    }
+                    else {
+                        if(((ColorDrawable)c2.getBackground()).getColor() == getResources().getColor(R.color.cardBackgroundSkyBlue)) {
+                            ImageView table1 = (ImageView) findViewById(R.id.imageView_p1Play);
+                            ImageView table2 = (ImageView) findViewById(R.id.imageView_p2Play);
+                            if(table1.getDrawable() == null){
+                                table1.setImageDrawable(c2.getDrawable());
+                                c2.setImageResource(android.R.color.transparent);
+                            }
+                            else if(table2.getDrawable() == null){
+                                table2.setImageDrawable(c2.getDrawable());
+                                c2.setImageResource(android.R.color.transparent);
+                            }
+                        }
+                    }
                 }
-                if(((ColorDrawable)c3.getBackground()) != null) {
-                    c3.setBackgroundColor(ContextCompat.getColor(this, R.color.transparent));
+                else {
+                    c2.setBackgroundColor(ContextCompat.getColor(this, R.color.cardBackgroundSkyBlue));
+                    if(((ColorDrawable)c1.getBackground()) != null) {
+                        c1.setBackgroundColor(ContextCompat.getColor(this, R.color.transparent));
+                    }
+                    if(((ColorDrawable)c3.getBackground()) != null) {
+                        c3.setBackgroundColor(ContextCompat.getColor(this, R.color.transparent));
+                    }
                 }
+
                 break;
 
             case R.id.imageView_card3:
-                c3.setBackgroundColor(ContextCompat.getColor(this, R.color.cardBackgroundSkyBlue));
-                if(((ColorDrawable)c1.getBackground()) != null) {
-                    c1.setBackgroundColor(ContextCompat.getColor(this, R.color.transparent));
+                if(((ColorDrawable)c3.getBackground()) != null ) {
+                    if(((ColorDrawable)c3.getBackground()).getColor() == 0){
+                        c3.setBackgroundColor(ContextCompat.getColor(this, R.color.cardBackgroundSkyBlue));
+                        if(((ColorDrawable)c1.getBackground()) != null) {
+                            c1.setBackgroundColor(ContextCompat.getColor(this, R.color.transparent));
+                        }
+                        if(((ColorDrawable)c2.getBackground()) != null) {
+                            c2.setBackgroundColor(ContextCompat.getColor(this, R.color.transparent));
+                        }
+                    }
+                    else {
+                        if(((ColorDrawable)c3.getBackground()).getColor() == getResources().getColor(R.color.cardBackgroundSkyBlue)) {
+                            ImageView table1 = (ImageView) findViewById(R.id.imageView_p1Play);
+                            ImageView table2 = (ImageView) findViewById(R.id.imageView_p2Play);
+                            if(table1.getDrawable() == null){
+                                table1.setImageDrawable(c3.getDrawable());
+                                c3.setImageResource(android.R.color.transparent);
+                            }
+                            else if(table2.getDrawable() == null){
+                                table2.setImageDrawable(c3.getDrawable());
+                                c3.setImageResource(android.R.color.transparent);
+                            }
+                        }
+                    }
                 }
-                if(((ColorDrawable)c2.getBackground()) != null) {
-                    c2.setBackgroundColor(ContextCompat.getColor(this, R.color.transparent));
+                else {
+                    c3.setBackgroundColor(ContextCompat.getColor(this, R.color.cardBackgroundSkyBlue));
+                    if(((ColorDrawable)c1.getBackground()) != null) {
+                        c1.setBackgroundColor(ContextCompat.getColor(this, R.color.transparent));
+                    }
+                    if(((ColorDrawable)c2.getBackground()) != null) {
+                        c2.setBackgroundColor(ContextCompat.getColor(this, R.color.transparent));
+                    }
                 }
+
                 break;
         }
     }
 
-    /*
-    public void selectCard(View view){
-        ImageView imageView = (ImageView) view;
-        ImageView c1 = (ImageView) findViewById(R.id.imageView_card1);
-        ImageView c2 = (ImageView) findViewById(R.id.imageView_card2);
-        ImageView c3 = (ImageView) findViewById(R.id.imageView_card3);
-        Log.e("imageview", imageView.getId()+"");
-
-        if(imageView.equals(c1)){
-            if(((ColorDrawable)c1.getBackground()) != null) {
-
-            }
-            else {
-                c1.setBackgroundColor(ContextCompat.getColor(this, R.color.cardBackgroundSkyBlue));
-                if(((ColorDrawable)c2.getBackground()) != null) {
-                    c2.setBackgroundColor(ContextCompat.getColor(this, R.color.transparent));
-                }
-                if(((ColorDrawable)c3.getBackground()) != null) {
-                    c3.setBackgroundColor(ContextCompat.getColor(this, R.color.transparent));
-                }
-            }
-        }
-        if(imageView.equals(c2)) {
-            if(((ColorDrawable)c2.getBackground()) != null) {
-
-            }
-            else {
-                imageView.setBackgroundColor(ContextCompat.getColor(this, R.color.cardBackgroundSkyBlue));
-                if(((ColorDrawable)c1.getBackground()) != null) {
-                    c1.setBackgroundColor(ContextCompat.getColor(this, R.color.transparent));
-                }
-                if(((ColorDrawable)c3.getBackground()) != null) {
-                    c3.setBackgroundColor(ContextCompat.getColor(this, R.color.transparent));
-                }
-            }
-        }
-        if(imageView.equals(c3)) {
-            if(((ColorDrawable)c3.getBackground()) != null) {
-
-            }
-            else {
-                imageView.setBackgroundColor(ContextCompat.getColor(this, R.color.cardBackgroundSkyBlue));
-                if(((ColorDrawable)c1.getBackground()) != null) {
-                    c1.setBackgroundColor(ContextCompat.getColor(this, R.color.transparent));
-                }
-                if(((ColorDrawable)c2.getBackground()) != null) {
-                    c2.setBackgroundColor(ContextCompat.getColor(this, R.color.transparent));
-                }
-            }
-        }
-    }
-    */
 
     public void generateRandomImg() {
         TypedArray cards = getResources().obtainTypedArray(R.array.my_cards);
         Random random = new Random();
         Log.e("cards", cards.length()+"");
-        int randomIndexOne = random.nextInt(53);
-        int randomIndexTwo = random.nextInt(53);
+        int randomIndexOne = random.nextInt(52);
+        int randomIndexTwo = random.nextInt(52);
         while(randomIndexOne == randomIndexTwo) {
-            randomIndexTwo = random.nextInt(53);
+            randomIndexTwo = random.nextInt(52);
         }
-        int randomIndexThree = random.nextInt(53);
+        int randomIndexThree = random.nextInt(52);
         while(randomIndexOne == randomIndexThree || randomIndexTwo == randomIndexOne) {
-            randomIndexThree = random.nextInt(53);
+            randomIndexThree = random.nextInt(52);
         }
 
         int rndImageC1 = cards.getResourceId(randomIndexOne, 0);
         int rndImageC2 = cards.getResourceId(randomIndexTwo, 0);
         int rndImageC3 = cards.getResourceId(randomIndexThree, 0);
 
+        Log.d("rnd1", randomIndexOne+"");
+        Log.d("rnd2", randomIndexTwo+"");
+        Log.d("rnd3", randomIndexThree+"");
         ImageView viewC1 = (ImageView) findViewById(R.id.imageView_card1);
         ImageView viewC2 = (ImageView) findViewById(R.id.imageView_card2);
         ImageView viewC3 = (ImageView) findViewById(R.id.imageView_card3);
         viewC1.setImageResource(rndImageC1);
         viewC2.setImageResource(rndImageC2);
         viewC3.setImageResource(rndImageC3);
+
 
 
     }
