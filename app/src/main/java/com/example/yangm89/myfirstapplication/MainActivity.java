@@ -10,17 +10,27 @@ import android.media.Image;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.SpannableString;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.SeekBar;
+import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
+import java.util.ArrayList;
 import java.util.Random;
 
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     ImageView c1, c2, c3;
-
+    ArrayList<String> chatHistory;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,22 +51,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         c1 = (ImageView) findViewById(R.id.imageView_card1);
         c2 = (ImageView) findViewById(R.id.imageView_card2);
         c3 = (ImageView) findViewById(R.id.imageView_card3);
+        chatHistory = new ArrayList();
 
         c1.setOnClickListener(this);
         c2.setOnClickListener(this);
         c3.setOnClickListener(this);
+
     }
 
     public void onClick(View v) {
         switch(v.getId()) {
             case R.id.imageView_card1:
-                if(((ColorDrawable)c1.getBackground()) != null ) {
+                if(c1.getBackground() != null ) {
                     if(((ColorDrawable)c1.getBackground()).getColor() == 0){
                         c1.setBackgroundColor(ContextCompat.getColor(this, R.color.cardBackgroundSkyBlue));
-                        if(((ColorDrawable)c2.getBackground()) != null) {
+                        if(c2.getBackground() != null) {
                             c2.setBackgroundColor(ContextCompat.getColor(this, R.color.transparent));
                         }
-                        if(((ColorDrawable)c3.getBackground()) != null) {
+                        if(c3.getBackground() != null) {
                             c3.setBackgroundColor(ContextCompat.getColor(this, R.color.transparent));
                         }
                     }
@@ -77,10 +89,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
                 else {
                     c1.setBackgroundColor(ContextCompat.getColor(this, R.color.cardBackgroundSkyBlue));
-                    if(((ColorDrawable)c2.getBackground()) != null) {
+                    if(c2.getBackground() != null) {
                         c2.setBackgroundColor(ContextCompat.getColor(this, R.color.transparent));
                     }
-                    if(((ColorDrawable)c3.getBackground()) != null) {
+                    if(c3.getBackground() != null) {
                         c3.setBackgroundColor(ContextCompat.getColor(this, R.color.transparent));
                     }
                 }
@@ -88,13 +100,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
 
             case R.id.imageView_card2:
-                if(((ColorDrawable)c2.getBackground()) != null ) {
+                if(c2.getBackground() != null ) {
                     if(((ColorDrawable)c2.getBackground()).getColor() == 0){
                         c2.setBackgroundColor(ContextCompat.getColor(this, R.color.cardBackgroundSkyBlue));
-                        if(((ColorDrawable)c1.getBackground()) != null) {
+                        if(c1.getBackground() != null) {
                             c1.setBackgroundColor(ContextCompat.getColor(this, R.color.transparent));
                         }
-                        if(((ColorDrawable)c3.getBackground()) != null) {
+                        if(c3.getBackground() != null) {
                             c3.setBackgroundColor(ContextCompat.getColor(this, R.color.transparent));
                         }
                     }
@@ -115,10 +127,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
                 else {
                     c2.setBackgroundColor(ContextCompat.getColor(this, R.color.cardBackgroundSkyBlue));
-                    if(((ColorDrawable)c1.getBackground()) != null) {
+                    if(c1.getBackground() != null) {
                         c1.setBackgroundColor(ContextCompat.getColor(this, R.color.transparent));
                     }
-                    if(((ColorDrawable)c3.getBackground()) != null) {
+                    if(c3.getBackground() != null) {
                         c3.setBackgroundColor(ContextCompat.getColor(this, R.color.transparent));
                     }
                 }
@@ -126,13 +138,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
 
             case R.id.imageView_card3:
-                if(((ColorDrawable)c3.getBackground()) != null ) {
+                if(c3.getBackground() != null ) {
                     if(((ColorDrawable)c3.getBackground()).getColor() == 0){
                         c3.setBackgroundColor(ContextCompat.getColor(this, R.color.cardBackgroundSkyBlue));
-                        if(((ColorDrawable)c1.getBackground()) != null) {
+                        if(c1.getBackground() != null) {
                             c1.setBackgroundColor(ContextCompat.getColor(this, R.color.transparent));
                         }
-                        if(((ColorDrawable)c2.getBackground()) != null) {
+                        if(c2.getBackground() != null) {
                             c2.setBackgroundColor(ContextCompat.getColor(this, R.color.transparent));
                         }
                     }
@@ -153,10 +165,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
                 else {
                     c3.setBackgroundColor(ContextCompat.getColor(this, R.color.cardBackgroundSkyBlue));
-                    if(((ColorDrawable)c1.getBackground()) != null) {
+                    if(c1.getBackground() != null) {
                         c1.setBackgroundColor(ContextCompat.getColor(this, R.color.transparent));
                     }
-                    if(((ColorDrawable)c2.getBackground()) != null) {
+                    if(c2.getBackground() != null) {
                         c2.setBackgroundColor(ContextCompat.getColor(this, R.color.transparent));
                     }
                 }
@@ -165,6 +177,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    public void sendMessage(View v) {
+        //handle chat messages
+
+        String msg = ((EditText)findViewById(R.id.editText_chatMsg)).getText().toString();
+        String temp;
+        StringBuilder s = new StringBuilder();
+        chatHistory.add(msg);
+        for(int i = chatHistory.size()-1; i >= 0; i--) {
+            temp = "YourName: " + chatHistory.get(i) + "\n";
+            s.append(temp);
+        }
+        ((TextView)findViewById(R.id.textView_chatHist)).setText(s);
+
+        ((EditText)findViewById(R.id.editText_chatMsg)).setText("");
+    }
 
     public void generateRandomImg() {
         TypedArray cards = getResources().obtainTypedArray(R.array.my_cards);
@@ -176,7 +203,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             randomIndexTwo = random.nextInt(52);
         }
         int randomIndexThree = random.nextInt(52);
-        while(randomIndexOne == randomIndexThree || randomIndexTwo == randomIndexOne) {
+        while(randomIndexOne == randomIndexThree || randomIndexThree == randomIndexTwo) {
             randomIndexThree = random.nextInt(52);
         }
 
@@ -193,8 +220,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         viewC1.setImageResource(rndImageC1);
         viewC2.setImageResource(rndImageC2);
         viewC3.setImageResource(rndImageC3);
-
-
 
     }
 }

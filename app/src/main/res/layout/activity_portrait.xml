@@ -81,7 +81,8 @@
         android:weightSum="1"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/playCont">
+        app:layout_constraintTop_toBottomOf="@+id/playCont"
+        android:layout_marginEnd="14dp">
 
         <ImageView
             android:id="@+id/imageView_card1"
@@ -220,7 +221,8 @@
         android:layout_marginTop="104dp"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginRight="4dp">
 
         <LinearLayout
             android:layout_width="81dp"
