@@ -89,8 +89,6 @@
             android:layout_weight=".333"
             android:contentDescription="@string/card1"
 
-            android:onClick="selectCard"
-
             app:srcCompat="@color/colorAccent" />
 
         <ImageView
@@ -99,8 +97,6 @@
             android:layout_height="wrap_content"
             android:layout_weight=".333"
             android:contentDescription="@string/card2"
-
-            android:onClick="selectCard"
 
             app:srcCompat="@color/colorAccent" />
 
@@ -154,15 +150,15 @@
             android:layout_height="match_parent"
             android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/textView_p1Play"
+            <ImageView
+                android:id="@+id/imageView_p1Play"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:text="@string/p1card" />
 
-            <TextView
-                android:id="@+id/textView_p2Play"
+            <ImageView
+                android:id="@+id/imageView_p2Play"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
