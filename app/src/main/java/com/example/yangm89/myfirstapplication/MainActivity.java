@@ -47,7 +47,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         //random image generator
         generateRandomImg();
-
         c1 = (ImageView) findViewById(R.id.imageView_card1);
         c2 = (ImageView) findViewById(R.id.imageView_card2);
         c3 = (ImageView) findViewById(R.id.imageView_card3);
@@ -56,6 +55,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         c1.setOnClickListener(this);
         c2.setOnClickListener(this);
         c3.setOnClickListener(this);
+
+        //disable math button
+        ((Button)findViewById(R.id.button_mathSend)).setEnabled(false);
 
     }
 

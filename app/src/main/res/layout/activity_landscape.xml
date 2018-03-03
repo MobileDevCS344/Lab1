@@ -40,6 +40,7 @@
             android:id="@+id/button_chatSend"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:onClick="sendMessage"
             android:text="@string/sendBtn" />
     </LinearLayout>
 
