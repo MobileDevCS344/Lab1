@@ -1,0 +1,28 @@
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/mathwar"
+    android:layout_width="378dp"
+    android:layout_height="236dp"
+    android:layout_marginBottom="8dp"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/textView_mathProb"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <EditText
+        android:id="@+id/editText_answer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="number"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+    <Button
+        android:id="@+id/button_mathSend"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:text="@string/sendBtn" />
+
+</LinearLayout>

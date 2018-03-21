@@ -45,117 +45,6 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/scoreCont"
-        android:layout_width="294dp"
-        android:layout_height="49dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginStart="8dp"
-        android:orientation="horizontal"
-        android:weightSum="1"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.469"
-        app:layout_constraintLeft_toRightOf="@+id/remainCont"
-        app:layout_constraintRight_toRightOf="parent">
-
-        <TextView
-            android:id="@+id/textView_score"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="@string/score"
-            android:textAlignment="center"
-            android:textSize="18sp"
-            android:typeface="sans" />
-
-        <TableLayout
-            android:id="@+id/scoreTable"
-            android:layout_width="179dp"
-            android:layout_height="match_parent"
-            android:background="@android:color/darker_gray"
-            tools:layout_editor_absoluteX="8dp"
-            tools:layout_editor_absoluteY="8dp">
-
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <TextView
-                    android:id="@+id/textView_p1ScoreLabel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/player1" />
-
-                <TextView
-                    android:id="@+id/textView_p1Score"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/p1Score"
-                    android:textAlignment="center" />
-            </TableRow>
-
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <TextView
-                    android:id="@+id/textView_p2ScoreLabel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/player2" />
-
-                <TextView
-                    android:id="@+id/textView_p2Score"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/p1Score"
-                    android:textAlignment="center" />
-            </TableRow>
-
-        </TableLayout>
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/mathwar"
-        android:layout_width="204dp"
-        android:layout_height="126dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="248dp"
-        android:layout_marginTop="8dp"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toTopOf="@+id/hand"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"
-        android:layout_marginRight="248dp">
-
-        <TextView
-            android:id="@+id/textView_mathProb"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:text="@string/mathWar" />
-
-        <EditText
-            android:id="@+id/editText_answer"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="number"
-            android:text="@string/answer"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
-
-        <Button
-            android:id="@+id/button_mathSend"
-            android:layout_width="match_parent"
-            android:layout_height="35dp"
-            android:text="@string/sendBtn" />
-    </LinearLayout>
-
-    <LinearLayout
         android:id="@+id/remainCont"
         android:layout_width="259dp"
         android:layout_height="49dp"
@@ -271,12 +160,10 @@
         android:layout_width="223dp"
         android:layout_height="99dp"
         android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:orientation="horizontal"
         app:layout_constraintBottom_toTopOf="@+id/hand"
-        app:layout_constraintEnd_toStartOf="@+id/mathwar"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -318,5 +205,28 @@
                 android:contentDescription="@string/table" />
         </LinearLayout>
     </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/math_frag_container"
+        android:layout_width="212dp"
+        android:layout_height="126dp"
+        android:layout_marginTop="4dp"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/score_frag_container"
+        android:layout_width="392dp"
+        android:layout_height="51dp"
+        android:layout_marginBottom="4dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+    </FrameLayout>
 
 </android.support.constraint.ConstraintLayout>

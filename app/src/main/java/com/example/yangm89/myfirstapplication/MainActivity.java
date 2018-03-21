@@ -1,5 +1,6 @@
 package com.example.yangm89.myfirstapplication;
 
+import android.app.FragmentTransaction;
 import android.content.res.Configuration;
 
 import android.content.res.TypedArray;
@@ -28,7 +29,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, LinearLayoutFragment.OnFragmentInteractionListener {
     ImageView c1, c2, c3;
     ArrayList<String> chatHistory;
 
@@ -56,8 +57,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         c2.setOnClickListener(this);
         c3.setOnClickListener(this);
 
-        //disable math button
-        ((Button)findViewById(R.id.button_mathSend)).setEnabled(false);
+    }
+
+    public void update_score(){
 
     }
 
@@ -186,13 +188,32 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         String temp;
         StringBuilder s = new StringBuilder();
         chatHistory.add(msg);
-        for(int i = chatHistory.size()-1; i >= 0; i--) {
-            temp = "YourName: " + chatHistory.get(i) + "\n";
-            s.append(temp);
-        }
-        ((TextView)findViewById(R.id.textView_chatHist)).setText(s);
+        if(msg.trim().equals("math")){
+            LinearLayoutFragment linearLayoutFragment = new LinearLayoutFragment();
+            android.support.v4.app.FragmentTransaction fragmentTransaction =
+                    getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.add(R.id.math_frag_container, linearLayoutFragment);
+            fragmentTransaction.commit();
 
-        ((EditText)findViewById(R.id.editText_chatMsg)).setText("");
+            for(int i = chatHistory.size()-1; i >= 0; i--) {
+                temp = "YourName: " + chatHistory.get(i) + "\n";
+                s.append(temp);
+            }
+
+            ((TextView)findViewById(R.id.textView_chatHist)).setText(s);
+            ((EditText)findViewById(R.id.editText_chatMsg)).setText("");
+        }
+        else {
+            for(int i = chatHistory.size()-1; i >= 0; i--) {
+                temp = "YourName: " + chatHistory.get(i) + "\n";
+                s.append(temp);
+            }
+
+            ((TextView)findViewById(R.id.textView_chatHist)).setText(s);
+            ((EditText)findViewById(R.id.editText_chatMsg)).setText("");
+        }
+
+
     }
 
     public void generateRandomImg() {
