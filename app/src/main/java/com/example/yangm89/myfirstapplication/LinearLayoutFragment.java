@@ -1,6 +1,7 @@
 package com.example.yangm89.myfirstapplication;
 
 import android.content.Context;
+import android.media.Image;
 import android.os.Bundle;
 import android.preference.PreferenceFragment;
 import android.support.v4.app.Fragment;
@@ -12,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.Random;
@@ -19,7 +21,6 @@ import java.util.Random;
 
 public class LinearLayoutFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
-    private int correct_answer;
 
     public LinearLayoutFragment() {
         //required empty public constructor
@@ -39,18 +40,28 @@ public class LinearLayoutFragment extends Fragment {
 
     public void onResume() {
         super.onResume();
-        generate_problem();
+        mListener.generateProblem();
+
+        ((ImageView) getActivity().findViewById(R.id.imageView_card3)).setOnClickListener(null);
+        ((ImageView) getActivity().findViewById(R.id.imageView_card2)).setOnClickListener(null);
+        ((ImageView) getActivity().findViewById(R.id.imageView_card1)).setOnClickListener(null);
 
         final Button mathButton = ((Button) getActivity().findViewById(R.id.button_mathSend));
         mathButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v){
                 int player_answer = Integer.parseInt(((EditText)getActivity().findViewById(R.id.editText_answer)).getText().toString());
-                Log.d("p answer", player_answer+"");
-                Log.d("correct a", correct_answer+"");
                 ((EditText)getActivity().findViewById(R.id.editText_answer)).setText("");
-                if(player_answer == correct_answer){
-                    generate_problem();
+                if(player_answer == mListener.getCorrectAnswer()){
+                    Log.d("correct answer", mListener.getCorrectAnswer() + "");
+                    Log.d("player answer", mListener.getPlayerAnswer() + "");
+                    String math = mListener.updateMathHistory();
+                    Log.d("Math hist", mListener.updateMathHistory()+"");
+                    ((TextView) getActivity().findViewById(R.id.textview_table)).setText(math);
+                    mListener.setPlayerAnswer(player_answer);
+                    mListener.generateProblem();
                 }
+
+
             }
         });
 
@@ -75,42 +86,16 @@ public class LinearLayoutFragment extends Fragment {
 
     public interface OnFragmentInteractionListener {
         //3 - Ensure the activity implements this activity
-        void update_score();
+        void generateProblem();
+        int getCorrectAnswer();
+        void setPlayerAnswer(int answer);
+        int getPlayerAnswer();
+        String updateMathHistory();
     }
 
 
-    public int calculate(int num1, String oper, int num2){
-        switch(oper) {
-            case ("+"): return num1 + num2;
-            case ("-"): return num1 - num2;
-            case ("*"): return num1 * num2;
-            default: return -1;
-        }
-    }
 
-    public void generate_problem(){
-        int test_answer;
-        Random random = new Random();
-        String[] operators  = {"-", "+", "*"};
-        int randomNum1 = random.nextInt(16);
-        int randomNum2 = random.nextInt(16);
-        int randomIndex = random.nextInt(3);
 
-        test_answer = calculate(randomNum1, operators[randomIndex], randomNum2);
-
-        while(test_answer < 0){
-            randomNum1 = random.nextInt(16);
-            randomNum2 = random.nextInt(16);
-            randomIndex = random.nextInt(3);
-            test_answer = calculate(randomNum1, operators[randomIndex], randomNum2);
-        }
-
-        String problem = randomNum1 + " " + operators[randomIndex] + " " + randomNum2 + " = ";
-        ((TextView)getActivity().findViewById(R.id.textView_mathProb)).setText(problem);
-        Log.d("num 1", randomNum1+"");
-        Log.d("num 2", randomNum2 +" ");
-        correct_answer = test_answer;
-    }
 
 
 }

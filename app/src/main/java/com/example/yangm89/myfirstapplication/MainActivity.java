@@ -29,9 +29,11 @@ import java.util.ArrayList;
 import java.util.Random;
 
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener, LinearLayoutFragment.OnFragmentInteractionListener {
-    ImageView c1, c2, c3;
-    ArrayList<String> chatHistory;
+public class MainActivity extends AppCompatActivity implements View.OnClickListener,
+        LinearLayoutFragment.OnFragmentInteractionListener, TableFragment.OnFragmentInteractionListener {
+    private ImageView c1, c2, c3;
+    private ArrayList<String> chatHistory, mathHistory;
+    private int correct_answer = -1, player_answer = -2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,14 +54,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         c2 = (ImageView) findViewById(R.id.imageView_card2);
         c3 = (ImageView) findViewById(R.id.imageView_card3);
         chatHistory = new ArrayList();
-
+        mathHistory = new ArrayList();
         c1.setOnClickListener(this);
         c2.setOnClickListener(this);
         c3.setOnClickListener(this);
 
     }
 
-    public void update_score(){
+    public void onResume(){
+        super.onResume();
+        //create table fragment
+        TableFragment tableFragment = new TableFragment();
+        android.support.v4.app.FragmentTransaction fragmentTransaction =
+                getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.add(R.id.score_frag_container, tableFragment);
+        fragmentTransaction.commit();
 
     }
 
@@ -188,12 +197,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         String temp;
         StringBuilder s = new StringBuilder();
         chatHistory.add(msg);
-        if(msg.trim().equals("math")){
+        if(msg.trim().toLowerCase().equals("math")){
             LinearLayoutFragment linearLayoutFragment = new LinearLayoutFragment();
             android.support.v4.app.FragmentTransaction fragmentTransaction =
                     getSupportFragmentManager().beginTransaction();
             fragmentTransaction.add(R.id.math_frag_container, linearLayoutFragment);
             fragmentTransaction.commit();
+
+
 
             for(int i = chatHistory.size()-1; i >= 0; i--) {
                 temp = "YourName: " + chatHistory.get(i) + "\n";
@@ -234,9 +245,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         int rndImageC2 = cards.getResourceId(randomIndexTwo, 0);
         int rndImageC3 = cards.getResourceId(randomIndexThree, 0);
 
-        Log.d("rnd1", randomIndexOne+"");
-        Log.d("rnd2", randomIndexTwo+"");
-        Log.d("rnd3", randomIndexThree+"");
         ImageView viewC1 = (ImageView) findViewById(R.id.imageView_card1);
         ImageView viewC2 = (ImageView) findViewById(R.id.imageView_card2);
         ImageView viewC3 = (ImageView) findViewById(R.id.imageView_card3);
@@ -244,5 +252,61 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         viewC2.setImageResource(rndImageC2);
         viewC3.setImageResource(rndImageC3);
 
+    }
+
+
+    public void generateProblem(){
+        int test_answer;
+        Random random = new Random();
+        String[] operators  = {"-", "+", "*"};
+        int randomNum1 = random.nextInt(16);
+        int randomNum2 = random.nextInt(16);
+        int randomIndex = random.nextInt(3);
+
+        test_answer = calculate(randomNum1, operators[randomIndex], randomNum2);
+
+        while(test_answer < 0){
+            randomNum1 = random.nextInt(16);
+            randomNum2 = random.nextInt(16);
+            randomIndex = random.nextInt(3);
+            test_answer = calculate(randomNum1, operators[randomIndex], randomNum2);
+        }
+
+        String problem = randomNum1 + " " + operators[randomIndex] + " " + randomNum2 + " = ";
+        mathHistory.add(problem + test_answer);
+        ((TextView)findViewById(R.id.textView_mathProb)).setText(problem);
+        correct_answer = test_answer;
+    }
+
+    public int calculate(int num1, String oper, int num2){
+        switch(oper) {
+            case ("+"): return num1 + num2;
+            case ("-"): return num1 - num2;
+            case ("*"): return num1 * num2;
+            default: return -1;
+        }
+    }
+
+    public int getCorrectAnswer(){
+        return correct_answer;
+    }
+
+    public void setPlayerAnswer(int answer){
+        player_answer = answer;
+    }
+
+    public int getPlayerAnswer(){
+        return player_answer;
+    }
+
+    public String updateMathHistory(){
+        String temp;
+        StringBuilder s = new StringBuilder();
+        for(int i = mathHistory.size()-1; i >= 0; i--) {
+            temp = mathHistory.get(i) + "\n";
+            s.append(temp);
+        }
+
+        return s.toString();
     }
 }
