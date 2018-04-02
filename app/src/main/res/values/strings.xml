@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">My First Application</string>
+    <string name="app_name">Game of War</string>
     <string name="card1">Card 1</string>
     <string name="card2">Card 2</string>
     <string name="card3">Card 3</string>
@@ -17,4 +17,8 @@
     <string name="answer">Answer</string>
     <string name="cardRem">26</string>
     <string name="table">Card Played</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="register">Registering</string>
+    <string name="login">Login</string>
 </resources>

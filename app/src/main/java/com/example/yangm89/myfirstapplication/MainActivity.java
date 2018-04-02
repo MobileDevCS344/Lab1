@@ -1,6 +1,7 @@
 package com.example.yangm89.myfirstapplication;
 
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.content.res.Configuration;
 
 import android.content.res.TypedArray;
@@ -34,6 +35,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ImageView c1, c2, c3;
     private ArrayList<String> chatHistory, mathHistory;
     private int correct_answer = -1, player_answer = -2;
+    private String username;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +49,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //this leaves the keyboard hidden on load
         getWindow().setSoftInputMode(
                 WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+
+        Intent intent = getIntent();
+        username = intent.getStringExtra(LoginActivity.key_username);
+        ((TextView)findViewById(R.id.textView_p1Label)).setText(username);
+        ((TextView)findViewById(R.id.textView_p1CardRemLabel)).setText(username);
 
         //random image generator
         generateRandomImg();
@@ -207,7 +214,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
             for(int i = chatHistory.size()-1; i >= 0; i--) {
-                temp = "YourName: " + chatHistory.get(i) + "\n";
+                temp = username + ": " + chatHistory.get(i) + "\n";
                 s.append(temp);
             }
 
@@ -216,7 +223,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         else {
             for(int i = chatHistory.size()-1; i >= 0; i--) {
-                temp = "YourName: " + chatHistory.get(i) + "\n";
+                temp = username + ": " + chatHistory.get(i) + "\n";
                 s.append(temp);
             }
 

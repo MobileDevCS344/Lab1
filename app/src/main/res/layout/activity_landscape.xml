@@ -85,8 +85,7 @@
                 <TextView
                     android:id="@+id/textView_p1CardRemLabel"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/player1" />
+                    android:layout_height="wrap_content" />
 
                 <TextView
                     android:id="@+id/textView_p1CardRem"
@@ -165,7 +164,8 @@
         android:orientation="horizontal"
         app:layout_constraintBottom_toTopOf="@+id/hand"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginLeft="8dp">
 
         <LinearLayout
             android:layout_width="114dp"
@@ -176,7 +176,6 @@
                 android:id="@+id/textView_p1Label"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/player1"
                 android:textAlignment="center" />
 
             <ImageView
@@ -225,7 +224,8 @@
         android:layout_marginBottom="4dp"
         android:layout_marginEnd="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginRight="8dp">
 
     </FrameLayout>
 
