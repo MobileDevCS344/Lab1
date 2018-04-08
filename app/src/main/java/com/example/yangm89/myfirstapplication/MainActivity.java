@@ -1,6 +1,6 @@
 package com.example.yangm89.myfirstapplication;
 
-import android.app.FragmentTransaction;
+
 import android.content.Intent;
 import android.content.res.Configuration;
 
@@ -11,6 +11,7 @@ import android.media.Image;
 
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v4.app.FragmentTransaction;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.SpannableString;
@@ -36,6 +37,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ArrayList<String> chatHistory, mathHistory;
     private int correct_answer = -1, player_answer = -2;
     private String username;
+    private boolean tableVisible;
+    private LinearLayoutFragment mathfragment;
+    private TableFragment tableFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,18 +70,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         c2.setOnClickListener(this);
         c3.setOnClickListener(this);
 
+
+        //add the table fragment to the screen
+        tableFragment = new TableFragment();
+        tableFragment.setArguments(getIntent().getExtras());
+        android.support.v4.app.FragmentTransaction f = getSupportFragmentManager().beginTransaction();
+        f.add(R.id.fragment_container, tableFragment);
+        f.commit();
+
+        //set bidding boolean to true because we are initially bidding
+        tableVisible = true;
     }
 
-    public void onResume(){
-        super.onResume();
-        //create table fragment
-        TableFragment tableFragment = new TableFragment();
-        android.support.v4.app.FragmentTransaction fragmentTransaction =
-                getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.add(R.id.score_frag_container, tableFragment);
-        fragmentTransaction.commit();
-
+    @Override
+    public void onStart(){
+        super.onStart();;
     }
+
 
     public void onClick(View v) {
         switch(v.getId()) {
@@ -205,13 +214,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         StringBuilder s = new StringBuilder();
         chatHistory.add(msg);
         if(msg.trim().toLowerCase().equals("math")){
-            LinearLayoutFragment linearLayoutFragment = new LinearLayoutFragment();
+     /*       LinearLayoutFragment linearLayoutFragment = new LinearLayoutFragment();
             android.support.v4.app.FragmentTransaction fragmentTransaction =
                     getSupportFragmentManager().beginTransaction();
             fragmentTransaction.add(R.id.math_frag_container, linearLayoutFragment);
             fragmentTransaction.commit();
+*/
+            mathfragment = new LinearLayoutFragment();
+            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.fragment_container, mathfragment);
+            fragmentTransaction.commit();
 
-
+            tableVisible = false ;
 
             for(int i = chatHistory.size()-1; i >= 0; i--) {
                 temp = username + ": " + chatHistory.get(i) + "\n";
@@ -317,3 +331,5 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         return s.toString();
     }
 }
+
+

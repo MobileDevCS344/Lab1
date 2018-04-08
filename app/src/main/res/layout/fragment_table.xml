@@ -1,13 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 
-    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="368dp"
-        android:layout_height="495dp">
 
-        <TextView
-            android:id="@+id/textview_table"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
 
-    </ScrollView>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+
+    <ImageView
+        android:id="@+id/imageView_p1Play"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:contentDescription="@string/card1" />
+
+    <ImageView
+        android:id="@+id/imageView_p2Play"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:contentDescription="@string/card2" />
+</LinearLayout>
+

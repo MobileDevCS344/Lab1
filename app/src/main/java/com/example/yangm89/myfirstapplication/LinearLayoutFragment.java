@@ -52,11 +52,8 @@ public class LinearLayoutFragment extends Fragment {
                 int player_answer = Integer.parseInt(((EditText)getActivity().findViewById(R.id.editText_answer)).getText().toString());
                 ((EditText)getActivity().findViewById(R.id.editText_answer)).setText("");
                 if(player_answer == mListener.getCorrectAnswer()){
-                    Log.d("correct answer", mListener.getCorrectAnswer() + "");
-                    Log.d("player answer", mListener.getPlayerAnswer() + "");
                     String math = mListener.updateMathHistory();
-                    Log.d("Math hist", mListener.updateMathHistory()+"");
-                    ((TextView) getActivity().findViewById(R.id.textview_table)).setText(math);
+                    ((TextView) getActivity().findViewById(R.id.textView_mathhistory)).setText(math);
                     mListener.setPlayerAnswer(player_answer);
                     mListener.generateProblem();
                 }
