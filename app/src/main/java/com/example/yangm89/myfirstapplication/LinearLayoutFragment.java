@@ -49,14 +49,17 @@ public class LinearLayoutFragment extends Fragment {
         final Button mathButton = ((Button) getActivity().findViewById(R.id.button_mathSend));
         mathButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v){
-                int player_answer = Integer.parseInt(((EditText)getActivity().findViewById(R.id.editText_answer)).getText().toString());
-                ((EditText)getActivity().findViewById(R.id.editText_answer)).setText("");
-                if(player_answer == mListener.getCorrectAnswer()){
-                    String math = mListener.updateMathHistory();
-                    ((TextView) getActivity().findViewById(R.id.textView_mathhistory)).setText(math);
-                    mListener.setPlayerAnswer(player_answer);
-                    mListener.generateProblem();
+                if(!((EditText) getActivity().findViewById(R.id.editText_answer)).getText().toString().equals("")){
+                    int player_answer = Integer.parseInt(((EditText)getActivity().findViewById(R.id.editText_answer)).getText().toString());
+                    ((EditText)getActivity().findViewById(R.id.editText_answer)).setText("");
+                    if(player_answer == mListener.getCorrectAnswer()){
+                        String math = mListener.updateMathHistory();
+                        ((TextView) getActivity().findViewById(R.id.textView_mathhistory)).setText(math);
+                        mListener.setPlayerAnswer(player_answer);
+                        mListener.generateProblem();
+                    }
                 }
+
 
 
             }
