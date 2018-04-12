@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private boolean tableVisible;
     private LinearLayoutFragment mathfragment;
     private TableFragment tableFragment;
-
+    private String problem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -341,7 +341,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             test_answer = calculate(randomNum1, operators[randomIndex], randomNum2);
         }
 
-        String problem = randomNum1 + " " + operators[randomIndex] + " " + randomNum2 + " = ";
+        problem = randomNum1 + " " + operators[randomIndex] + " " + randomNum2 + " = ";
         ((TextView)findViewById(R.id.textView_mathProb)).setText(problem);
         mathHistory.add(problem + test_answer);
         correct_answer = test_answer;
