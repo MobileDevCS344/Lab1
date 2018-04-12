@@ -88,6 +88,42 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onStart();;
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState){
+        super.onSaveInstanceState(outState);
+        outState.putStringArrayList("chatHistory", chatHistory);
+        outState.putStringArrayList("mathHistory", mathHistory);
+        outState.putString("mathProblem", "");
+    }
+
+    @Override
+    public void onRestoreInstanceState(Bundle savedInstanceState){
+        super.onRestoreInstanceState(savedInstanceState);
+        StringBuilder chatSb = new StringBuilder();
+        StringBuilder mathHistSb = new StringBuilder();
+        chatHistory = savedInstanceState.getStringArrayList("chatHistory");
+        mathHistory = savedInstanceState.getStringArrayList("mathHistory");
+        if (getResources().getConfiguration().orientation ==
+                Configuration.ORIENTATION_LANDSCAPE){
+            for(int i = chatHistory.size()-1; i >= 0; i--) {
+                String temp = username + ": " + chatHistory.get(i) + "\n";
+                chatSb.append(temp);
+            }
+
+            ((TextView)findViewById(R.id.textView_chatHist)).setText(chatSb);
+            ((EditText)findViewById(R.id.editText_chatMsg)).setText("");
+        }
+
+        //keep math history synced
+        for(int i = mathHistory.size() - 1; i >= 0; i--) {
+            String temp = mathHistory.get(i) + "\n";
+            mathHistSb.append(temp);
+        }
+
+        ((TextView) findViewById(R.id.textView_mathhistory)).setText(mathHistSb);
+
+    }
+
 
     public void onClick(View v) {
         switch(v.getId()) {
@@ -220,6 +256,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             fragmentTransaction.replace(R.id.fragment_container, mathfragment);
             fragmentTransaction.commit();
 
+            //set table visibility tracker to false
             tableVisible = false ;
 
             for(int i = chatHistory.size()-1; i >= 0; i--) {
@@ -238,10 +275,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             fragmentTransaction.replace(R.id.fragment_container, tableFragment);
             fragmentTransaction.commit();
 
-            Toast.makeText(this,
-                    "in else if stmt",
-                    Toast.LENGTH_SHORT).show();
-
+            //set table visibility to true
             tableVisible = true;
 
             c1.setOnClickListener(this);
