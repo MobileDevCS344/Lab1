@@ -1,7 +1,11 @@
 package com.example.yangm89.myfirstapplication;
 
+import android.content.ContentValues;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteDatabaseLockedException;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,7 +20,6 @@ import java.util.regex.Pattern;
 
 public class LoginActivity extends AppCompatActivity {
     public final Pattern textPattern = Pattern.compile("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).+$");
-    public final static String key_username = "local_username_key";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +33,8 @@ public class LoginActivity extends AppCompatActivity {
         //this leaves the keyboard hidden on load
         getWindow().setSoftInputMode(
                 WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+
+
 
     }
 
@@ -55,53 +60,163 @@ public class LoginActivity extends AppCompatActivity {
         Intent intent = new Intent(this, MainActivity.class);
         CheckBox register = ((CheckBox)findViewById(R.id.checkBox_register));
         CheckBox login = ((CheckBox)findViewById(R.id.checkBox_login));
+
+        MyDBContract.MyDbHelper mdbh = new MyDBContract.MyDbHelper(getApplicationContext());
+        SQLiteDatabase db = mdbh.getWritableDatabase();
+        SQLiteDatabase rdb = mdbh.getReadableDatabase();
+        ContentValues values = new ContentValues();
+
+
+
         //if register is checked
         if(register.isChecked()){
             String username = ((EditText)findViewById(R.id.editText_username)).getText().toString();
             String password = ((EditText)findViewById(R.id.editText_password)).getText().toString();
+
+            String selection = MyDBContract.DBEntry.COLUMN_NAME_USER_ID + " LIKE ? " ;
+            String[] selectionArgs = { username };
+            String[] projection = {MyDBContract.DBEntry.COLUMN_NAME_USER_ID, MyDBContract.DBEntry.COLUMN_NAME_PASSWORD};
+            String sortOrder = MyDBContract.DBEntry.COLUMN_NAME_USER_ID + " DESC";
+            Cursor cursor = rdb.query(MyDBContract.DBEntry.TABLE_NAME,
+                    projection,
+                    selection,
+                    selectionArgs,
+                    null,
+                    null,
+                    sortOrder);
+
             if(username.length() >= 4){
-                if(password.length() >= 6){
-                    if(isTextValid(password)){
-                        intent.putExtra(key_username, username);
-                        startActivity(intent);
+                //check if username already exists
+                if(cursor.getCount() == 0){
+                    if(password.length() >= 6){
+                        if(isTextValid(password)){
+
+
+                            //add the user info to the values
+                            values.put(MyDBContract.DBEntry._ID, 1);
+                            values.put(MyDBContract.DBEntry.COLUMN_NAME_USER_ID, username);
+                            values.put(MyDBContract.DBEntry.COLUMN_NAME_PASSWORD, password);
+                            //create a row in the database
+                            long rowId = db.insert(MyDBContract.DBEntry.TABLE_NAME, null, values);
+
+                            intent.putExtra(Constants.key_username, username);
+                            startActivity(intent);
+                        }
+                        else {
+                            Toast.makeText(this,
+                                    "Password must contain a capital letter, lowercase letter, and a number",
+                                    Toast.LENGTH_SHORT).show();
+                        }
                     }
                     else {
                         Toast.makeText(this,
-                              "Password must contain a capital letter, lowercase letter, and a number",
-                              Toast.LENGTH_SHORT).show();
+                                "Password must contain at least 6 characters",
+                                Toast.LENGTH_SHORT).show();
                     }
                 }
                 else {
-                    Toast.makeText(this,
-                            "Password must contain at least 6 characters",
-                            Toast.LENGTH_SHORT).show();
+                    cursor.moveToFirst();
+                    while(!cursor.isAfterLast()) {
+                        String id = cursor.getString(cursor.getColumnIndexOrThrow(MyDBContract.DBEntry.COLUMN_NAME_USER_ID));
+                        if(id.equals(username)){
+                            Toast.makeText(this,
+                                    "The username " + username + " is already taken.",
+                                    Toast.LENGTH_SHORT).show();
+                            break;
+                        }
+                        cursor.moveToNext();
+                    }
+
+                    if(password.length() >= 6){
+                        if(isTextValid(password)){
+
+
+                            //add the user info to the values
+                            values.put(MyDBContract.DBEntry._ID, 1);
+                            values.put(MyDBContract.DBEntry.COLUMN_NAME_USER_ID, username);
+                            values.put(MyDBContract.DBEntry.COLUMN_NAME_PASSWORD, password);
+                            //create a row in the database
+                            long rowId = db.insert(MyDBContract.DBEntry.TABLE_NAME, null, values);
+
+                            intent.putExtra(Constants.key_username, username);
+                            startActivity(intent);
+                        }
+                        else {
+                            Toast.makeText(this,
+                                    "Password must contain a capital letter, lowercase letter, and a number",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                    else {
+                        Toast.makeText(this,
+                                "Password must contain at least 6 characters",
+                                Toast.LENGTH_SHORT).show();
+                    }
+
+
                 }
             }
             else {
                 Toast.makeText(this,
-                        "Username must contain at least 4 characters",
+                        "Username must contain at least 4 characters.",
                         Toast.LENGTH_SHORT).show();
             }
+
+            cursor.close();
         }
         else if(login.isChecked()){
+            //get the typed in username and password
             String username = ((EditText)findViewById(R.id.editText_username)).getText().toString();
             String password = ((EditText)findViewById(R.id.editText_password)).getText().toString();
-            if(username.equals("Erik")){
-                if(password.equals("Krohn1")){
-                    intent.putExtra(key_username, username);
-                    startActivity(intent);
-                }
-                else {
-                    Toast.makeText(this,
-                            "Incorrect username and password",
-                            Toast.LENGTH_SHORT).show();
-                }
-            }
-            else {
+
+            //check username and password against the database
+            String selection = MyDBContract.DBEntry.COLUMN_NAME_USER_ID + " LIKE ? " ;
+            String[] selectionArgs = { username };
+            String[] projection = {MyDBContract.DBEntry.COLUMN_NAME_USER_ID, MyDBContract.DBEntry.COLUMN_NAME_PASSWORD};
+            String sortOrder = MyDBContract.DBEntry.COLUMN_NAME_USER_ID + " DESC";
+            Cursor cursor = rdb.query(MyDBContract.DBEntry.TABLE_NAME,
+                    projection,
+                    selection,
+                    selectionArgs,
+                    null,
+                    null,
+                    sortOrder);
+            if(cursor.getCount()==0){
                 Toast.makeText(this,
-                        "Incorrect username and password",
+                        "Username " + username + " does not exist. Please register first.",
                         Toast.LENGTH_SHORT).show();
             }
+            else {
+                cursor.moveToFirst();
+                while(!cursor.isAfterLast()){
+                    String id = cursor.getString(cursor.getColumnIndexOrThrow(MyDBContract.DBEntry.COLUMN_NAME_USER_ID));
+                    String pw = cursor.getString(cursor.getColumnIndexOrThrow(MyDBContract.DBEntry.COLUMN_NAME_PASSWORD));
+
+                    //check if the id and password is valid
+                    if(username.equals(id)){
+                        if(password.equals(pw)){
+                            intent.putExtra(Constants.key_username, username);
+                            startActivity(intent);
+                        }
+                        else {
+                            Toast.makeText(this,
+                                    "Incorrect username and password combination.",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                    else {
+                        Toast.makeText(this,
+                                "Incorrect username. Please check the spelling of the username",
+                                Toast.LENGTH_SHORT).show();
+                    }
+
+                    cursor.moveToNext();
+                }
+
+                cursor.close();
+            }
+
+
         }
     }
 

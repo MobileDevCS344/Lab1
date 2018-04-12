@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 
         Intent intent = getIntent();
-        username = intent.getStringExtra(LoginActivity.key_username);
+        username = intent.getStringExtra(Constants.key_username);
         ((TextView)findViewById(R.id.textView_p1Label)).setText(username);
         ((TextView)findViewById(R.id.textView_p1CardRemLabel)).setText(username);
 
