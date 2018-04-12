@@ -129,8 +129,6 @@ public class LoginActivity extends AppCompatActivity {
 
                     if(password.length() >= 6){
                         if(isTextValid(password)){
-
-
                             //add the user info to the values
                             values.put(MyDBContract.DBEntry._ID, 1);
                             values.put(MyDBContract.DBEntry.COLUMN_NAME_USER_ID, username);

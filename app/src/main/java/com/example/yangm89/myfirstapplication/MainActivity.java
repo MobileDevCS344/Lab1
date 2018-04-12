@@ -24,6 +24,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.w3c.dom.Text;
 
@@ -214,12 +215,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         StringBuilder s = new StringBuilder();
         chatHistory.add(msg);
         if(msg.trim().toLowerCase().equals("math")){
-     /*       LinearLayoutFragment linearLayoutFragment = new LinearLayoutFragment();
-            android.support.v4.app.FragmentTransaction fragmentTransaction =
-                    getSupportFragmentManager().beginTransaction();
-            fragmentTransaction.add(R.id.math_frag_container, linearLayoutFragment);
-            fragmentTransaction.commit();
-*/
             mathfragment = new LinearLayoutFragment();
             FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
             fragmentTransaction.replace(R.id.fragment_container, mathfragment);
@@ -234,6 +229,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             ((TextView)findViewById(R.id.textView_chatHist)).setText(s);
             ((EditText)findViewById(R.id.editText_chatMsg)).setText("");
+        }
+        else if(msg.trim().toLowerCase().equals("table") && !tableVisible){
+            //add the table fragment to the screen
+            tableFragment = new TableFragment();
+            tableFragment.setArguments(getIntent().getExtras());
+            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.fragment_container, tableFragment);
+            fragmentTransaction.commit();
+
+            Toast.makeText(this,
+                    "in else if stmt",
+                    Toast.LENGTH_SHORT).show();
+
+            tableVisible = true;
+
+            c1.setOnClickListener(this);
+            c2.setOnClickListener(this);
+            c3.setOnClickListener(this);
         }
         else {
             for(int i = chatHistory.size()-1; i >= 0; i--) {
