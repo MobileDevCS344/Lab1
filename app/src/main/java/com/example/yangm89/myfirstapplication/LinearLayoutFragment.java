@@ -89,7 +89,6 @@ public class LinearLayoutFragment extends Fragment {
         void generateProblem();
         int getCorrectAnswer();
         void setPlayerAnswer(int answer);
-        int getPlayerAnswer();
         String updateMathHistory();
     }
 

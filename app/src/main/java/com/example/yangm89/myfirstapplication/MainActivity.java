@@ -42,6 +42,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private LinearLayoutFragment mathfragment;
     private TableFragment tableFragment;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -341,8 +342,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
         String problem = randomNum1 + " " + operators[randomIndex] + " " + randomNum2 + " = ";
-        mathHistory.add(problem + test_answer);
         ((TextView)findViewById(R.id.textView_mathProb)).setText(problem);
+        mathHistory.add(problem + test_answer);
         correct_answer = test_answer;
     }
 
@@ -377,6 +378,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         return s.toString();
     }
+
+
 }
 
 
