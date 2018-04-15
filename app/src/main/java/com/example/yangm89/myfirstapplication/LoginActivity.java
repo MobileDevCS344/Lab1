@@ -73,7 +73,7 @@ public class LoginActivity extends AppCompatActivity {
             String username = ((EditText)findViewById(R.id.editText_username)).getText().toString();
             String password = ((EditText)findViewById(R.id.editText_password)).getText().toString();
 
-            String selection = MyDBContract.DBEntry.COLUMN_NAME_USER_ID + " LIKE ? " ;
+            String selection = MyDBContract.DBEntry.COLUMN_NAME_USER_ID + " GLOB ? " ;
             String[] selectionArgs = { username };
             String[] projection = {MyDBContract.DBEntry.COLUMN_NAME_USER_ID, MyDBContract.DBEntry.COLUMN_NAME_PASSWORD};
             String sortOrder = MyDBContract.DBEntry.COLUMN_NAME_USER_ID + " DESC";
@@ -93,7 +93,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
                             //add the user info to the values
-                            values.put(MyDBContract.DBEntry._ID, 1);
+                       //     values.put(MyDBContract.DBEntry._ID, 1);
                             values.put(MyDBContract.DBEntry.COLUMN_NAME_USER_ID, username);
                             values.put(MyDBContract.DBEntry.COLUMN_NAME_PASSWORD, password);
                             //create a row in the database
@@ -114,7 +114,7 @@ public class LoginActivity extends AppCompatActivity {
                                 Toast.LENGTH_SHORT).show();
                     }
                 }
-                else {
+                else if(cursor.getCount() > 0){
                     cursor.moveToFirst();
                     while(!cursor.isAfterLast()) {
                         String id = cursor.getString(cursor.getColumnIndexOrThrow(MyDBContract.DBEntry.COLUMN_NAME_USER_ID));
@@ -124,32 +124,32 @@ public class LoginActivity extends AppCompatActivity {
                                     Toast.LENGTH_SHORT).show();
                             break;
                         }
-                        else {
-                            if(password.length() >= 6){
-                                if(isTextValid(password)){
-                                    //add the user info to the values
-                                    values.put(MyDBContract.DBEntry._ID, 1);
-                                    values.put(MyDBContract.DBEntry.COLUMN_NAME_USER_ID, username);
-                                    values.put(MyDBContract.DBEntry.COLUMN_NAME_PASSWORD, password);
-                                    //create a row in the database
-                                    db.insert(MyDBContract.DBEntry.TABLE_NAME, null, values);
-
-                                    intent.putExtra(Constants.key_username, username);
-                                    startActivity(intent);
-                                }
-                                else {
-                                    Toast.makeText(this,
-                                            "Password must contain a capital letter, lowercase letter, and a number",
-                                            Toast.LENGTH_SHORT).show();
-                                }
-                            }
-                            else {
-                                Toast.makeText(this,
-                                        "Password must contain at least 6 characters",
-                                        Toast.LENGTH_SHORT).show();
-                            }
-                        }
                         cursor.moveToNext();
+                    }
+                }
+                else {
+                    if(password.length() >= 6){
+                        if(isTextValid(password)){
+                            //add the user info to the values
+                            //     values.put(MyDBContract.DBEntry._ID, 1);
+                            values.put(MyDBContract.DBEntry.COLUMN_NAME_USER_ID, username);
+                            values.put(MyDBContract.DBEntry.COLUMN_NAME_PASSWORD, password);
+                            //create a row in the database
+                            db.insert(MyDBContract.DBEntry.TABLE_NAME, null, values);
+
+                            intent.putExtra(Constants.key_username, username);
+                            startActivity(intent);
+                        }
+                        else {
+                            Toast.makeText(this,
+                                    "Password must contain a capital letter, lowercase letter, and a number",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                    else {
+                        Toast.makeText(this,
+                                "Password must contain at least 6 characters",
+                                Toast.LENGTH_SHORT).show();
                     }
                 }
             }
@@ -167,7 +167,7 @@ public class LoginActivity extends AppCompatActivity {
             String password = ((EditText)findViewById(R.id.editText_password)).getText().toString();
 
             //check username and password against the database
-            String selection = MyDBContract.DBEntry.COLUMN_NAME_USER_ID + " LIKE ? " ;
+            String selection = MyDBContract.DBEntry.COLUMN_NAME_USER_ID + " GLOB ? " ;
             String[] selectionArgs = { username };
             String[] projection = {MyDBContract.DBEntry.COLUMN_NAME_USER_ID, MyDBContract.DBEntry.COLUMN_NAME_PASSWORD};
             String sortOrder = MyDBContract.DBEntry.COLUMN_NAME_USER_ID + " DESC";
@@ -188,6 +188,10 @@ public class LoginActivity extends AppCompatActivity {
                 while(!cursor.isAfterLast()){
                     String id = cursor.getString(cursor.getColumnIndexOrThrow(MyDBContract.DBEntry.COLUMN_NAME_USER_ID));
                     String pw = cursor.getString(cursor.getColumnIndexOrThrow(MyDBContract.DBEntry.COLUMN_NAME_PASSWORD));
+
+                    Toast.makeText(this,
+                            "id " + id,
+                            Toast.LENGTH_LONG).show();
 
                     //check if the id and password is valid
                     if(username.equals(id)){
