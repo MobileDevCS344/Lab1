@@ -29,6 +29,8 @@ public class LinearLayoutFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRetainInstance(true);
+
     }
 
     @Override
@@ -39,7 +41,7 @@ public class LinearLayoutFragment extends Fragment {
     }
 
     public void onResume() {
-        super.onResume();
+       super.onResume();
         mListener.generateProblem();
 
         ((ImageView) getActivity().findViewById(R.id.imageView_card3)).setOnClickListener(null);

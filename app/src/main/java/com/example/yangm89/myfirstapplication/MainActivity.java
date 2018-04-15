@@ -5,8 +5,11 @@ import android.content.Intent;
 import android.content.res.Configuration;
 
 import android.content.res.TypedArray;
+import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.media.Image;
 
 import android.support.v4.content.ContextCompat;
@@ -72,21 +75,27 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         c2.setOnClickListener(this);
         c3.setOnClickListener(this);
 
+        tableFragment = (TableFragment) getSupportFragmentManager().findFragmentByTag(""+Constants.table_fragment_tag);
 
-        //add the table fragment to the screen
-        tableFragment = new TableFragment();
-        tableFragment.setArguments(getIntent().getExtras());
-        android.support.v4.app.FragmentTransaction f = getSupportFragmentManager().beginTransaction();
-        f.add(R.id.fragment_container, tableFragment);
-        f.commit();
+        if(tableFragment == null) {
+            //add the table fragment to the screen
+            tableFragment = new TableFragment();
+            tableFragment.setArguments(getIntent().getExtras());
+            FragmentTransaction f = getSupportFragmentManager().beginTransaction();
+            f.add(R.id.fragment_container, tableFragment, ""+Constants.table_fragment_tag);
+            f.commit();
+            //set bidding boolean to true because we are initially bidding
+            tableVisible = true;
+        }
 
-        //set bidding boolean to true because we are initially bidding
-        tableVisible = true;
+
+
+
     }
 
     @Override
     public void onStart(){
-        super.onStart();;
+        super.onStart();
     }
 
     @Override
@@ -94,35 +103,69 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onSaveInstanceState(outState);
         outState.putStringArrayList("chatHistory", chatHistory);
         outState.putStringArrayList("mathHistory", mathHistory);
-        outState.putString("mathProblem", "");
+
+        //put all the images in a save instance state
+        ImageView c1ImageView = ((ImageView)findViewById(R.id.imageView_card1));
+        ImageView c2ImageView = ((ImageView) findViewById(R.id.imageView_card2));
+        ImageView c3ImageView = ((ImageView) findViewById(R.id.imageView_card3));
+
+       if(c1ImageView.getDrawable() instanceof BitmapDrawable){
+            BitmapDrawable c1_bitmapDrawable = (BitmapDrawable) c1ImageView.getDrawable();
+            Bitmap c1_bitmap = c1_bitmapDrawable.getBitmap();
+            outState.putParcelable("c1Image", c1_bitmap);
+        }
+
+        if(c2ImageView.getDrawable() instanceof BitmapDrawable){
+            BitmapDrawable c2_bitmapDrawable = (BitmapDrawable) c2ImageView.getDrawable();
+            Bitmap c2_bitmap = c2_bitmapDrawable.getBitmap();
+            outState.putParcelable("c2Image", c2_bitmap);
+        }
+
+        if(c3ImageView.getDrawable() instanceof BitmapDrawable){
+            BitmapDrawable c3_bitmapDrawable = (BitmapDrawable) c3ImageView.getDrawable();
+            Bitmap c3_bitmap = c3_bitmapDrawable.getBitmap();
+            outState.putParcelable("c3Image", c3_bitmap);
+        }
+
     }
 
     @Override
     public void onRestoreInstanceState(Bundle savedInstanceState){
         super.onRestoreInstanceState(savedInstanceState);
-        StringBuilder chatSb = new StringBuilder();
-        StringBuilder mathHistSb = new StringBuilder();
-        chatHistory = savedInstanceState.getStringArrayList("chatHistory");
-        mathHistory = savedInstanceState.getStringArrayList("mathHistory");
-        if (getResources().getConfiguration().orientation ==
-                Configuration.ORIENTATION_LANDSCAPE){
-            for(int i = chatHistory.size()-1; i >= 0; i--) {
-                String temp = username + ": " + chatHistory.get(i) + "\n";
-                chatSb.append(temp);
+
+        if(savedInstanceState != null){
+            StringBuilder chatSb = new StringBuilder();
+            StringBuilder mathHistSb = new StringBuilder();
+            chatHistory = savedInstanceState.getStringArrayList("chatHistory");
+            mathHistory = savedInstanceState.getStringArrayList("mathHistory");
+            if (getResources().getConfiguration().orientation ==
+                    Configuration.ORIENTATION_LANDSCAPE){
+                for(int i = chatHistory.size()-1; i >= 0; i--) {
+                    String temp = username + ": " + chatHistory.get(i) + "\n";
+                    chatSb.append(temp);
+                }
+
+                ((TextView)findViewById(R.id.textView_chatHist)).setText(chatSb);
+                ((EditText)findViewById(R.id.editText_chatMsg)).setText("");
             }
 
-            ((TextView)findViewById(R.id.textView_chatHist)).setText(chatSb);
-            ((EditText)findViewById(R.id.editText_chatMsg)).setText("");
+            //keep math history synced
+            for(int i = mathHistory.size() - 1; i >= 0; i--) {
+                String temp = mathHistory.get(i) + "\n";
+                mathHistSb.append(temp);
+            }
+
+            ((TextView) findViewById(R.id.textView_mathhistory)).setText(mathHistSb);
+
+            //keep images the same in clickable table
+            Bitmap c1_bitmap = savedInstanceState.getParcelable("c1Image");
+            ((ImageView) findViewById(R.id.imageView_card1)).setImageBitmap(c1_bitmap);
+            Bitmap c2_bitmap = savedInstanceState.getParcelable("c2Image");
+            ((ImageView) findViewById(R.id.imageView_card2)).setImageBitmap(c2_bitmap);
+            Bitmap c3_bitmap = savedInstanceState.getParcelable("c3Image");
+            ((ImageView) findViewById(R.id.imageView_card3)).setImageBitmap(c3_bitmap);
+
         }
-
-        //keep math history synced
-        for(int i = mathHistory.size() - 1; i >= 0; i--) {
-            String temp = mathHistory.get(i) + "\n";
-            mathHistSb.append(temp);
-        }
-
-        ((TextView) findViewById(R.id.textView_mathhistory)).setText(mathHistSb);
-
     }
 
 
