@@ -65,9 +65,6 @@ public class LinearLayoutFragment extends Fragment {
         mathButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v){
                 if(!((EditText) getActivity().findViewById(R.id.editText_answer)).getText().toString().equals("")){
-                    int correctAnswer  = mListener.getCorrectAnswer();
-
-                    Toast.makeText(getActivity(), "correct answer: " + correctAnswer, Toast.LENGTH_SHORT).show();
                     int player_answer = Integer.parseInt(((EditText)getActivity().findViewById(R.id.editText_answer)).getText().toString());
                     ((EditText)getActivity().findViewById(R.id.editText_answer)).setText("");
                     if(player_answer == mListener.getCorrectAnswer()){
