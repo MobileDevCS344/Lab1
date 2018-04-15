@@ -15,12 +15,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.Random;
 
 
 public class LinearLayoutFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
+    private String problem ;
 
     public LinearLayoutFragment() {
         //required empty public constructor
@@ -29,7 +31,7 @@ public class LinearLayoutFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setRetainInstance(true);
+        //setRetainInstance(true);
 
     }
 
@@ -41,8 +43,19 @@ public class LinearLayoutFragment extends Fragment {
     }
 
     public void onResume() {
-       super.onResume();
-        mListener.generateProblem();
+        super.onResume();
+
+        if(mListener.isFirstMathRun()){
+            mListener.generateProblem();
+            problem = mListener.getProblem();
+            ((TextView)getActivity().findViewById(R.id.textView_mathProb)).setText(problem);
+            mListener.setFirstMathRun(false);
+        }
+        else {
+            problem = mListener.getProblem();
+            ((TextView)getActivity().findViewById(R.id.textView_mathProb)).setText(problem);
+        }
+
 
         ((ImageView) getActivity().findViewById(R.id.imageView_card3)).setOnClickListener(null);
         ((ImageView) getActivity().findViewById(R.id.imageView_card2)).setOnClickListener(null);
@@ -52,13 +65,19 @@ public class LinearLayoutFragment extends Fragment {
         mathButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v){
                 if(!((EditText) getActivity().findViewById(R.id.editText_answer)).getText().toString().equals("")){
+                    int correctAnswer  = mListener.getCorrectAnswer();
+
+                    Toast.makeText(getActivity(), "correct answer: " + correctAnswer, Toast.LENGTH_SHORT).show();
                     int player_answer = Integer.parseInt(((EditText)getActivity().findViewById(R.id.editText_answer)).getText().toString());
                     ((EditText)getActivity().findViewById(R.id.editText_answer)).setText("");
                     if(player_answer == mListener.getCorrectAnswer()){
+                        mListener.addToMathHistory(mListener.getProblem(), mListener.getCorrectAnswer() );
                         String math = mListener.updateMathHistory();
-                        ((TextView) getActivity().findViewById(R.id.textView_mathhistory)).setText(math);
+                       ((TextView) getActivity().findViewById(R.id.textView_mathhistory)).setText(math);
                         mListener.setPlayerAnswer(player_answer);
                         mListener.generateProblem();
+                        problem = mListener.getProblem();
+                        ((TextView)getActivity().findViewById(R.id.textView_mathProb)).setText(problem);
                     }
                 }
 
@@ -92,6 +111,10 @@ public class LinearLayoutFragment extends Fragment {
         int getCorrectAnswer();
         void setPlayerAnswer(int answer);
         String updateMathHistory();
+        boolean isFirstMathRun();
+        void setFirstMathRun(boolean b);
+        void addToMathHistory(String h, int test_answer);
+        String getProblem();
     }
 
 

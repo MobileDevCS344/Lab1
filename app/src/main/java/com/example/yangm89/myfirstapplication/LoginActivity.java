@@ -124,34 +124,33 @@ public class LoginActivity extends AppCompatActivity {
                                     Toast.LENGTH_SHORT).show();
                             break;
                         }
+                        else {
+                            if(password.length() >= 6){
+                                if(isTextValid(password)){
+                                    //add the user info to the values
+                                    values.put(MyDBContract.DBEntry._ID, 1);
+                                    values.put(MyDBContract.DBEntry.COLUMN_NAME_USER_ID, username);
+                                    values.put(MyDBContract.DBEntry.COLUMN_NAME_PASSWORD, password);
+                                    //create a row in the database
+                                    db.insert(MyDBContract.DBEntry.TABLE_NAME, null, values);
+
+                                    intent.putExtra(Constants.key_username, username);
+                                    startActivity(intent);
+                                }
+                                else {
+                                    Toast.makeText(this,
+                                            "Password must contain a capital letter, lowercase letter, and a number",
+                                            Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                            else {
+                                Toast.makeText(this,
+                                        "Password must contain at least 6 characters",
+                                        Toast.LENGTH_SHORT).show();
+                            }
+                        }
                         cursor.moveToNext();
                     }
-
-                    if(password.length() >= 6){
-                        if(isTextValid(password)){
-                            //add the user info to the values
-                            values.put(MyDBContract.DBEntry._ID, 1);
-                            values.put(MyDBContract.DBEntry.COLUMN_NAME_USER_ID, username);
-                            values.put(MyDBContract.DBEntry.COLUMN_NAME_PASSWORD, password);
-                            //create a row in the database
-                            long rowId = db.insert(MyDBContract.DBEntry.TABLE_NAME, null, values);
-
-                            intent.putExtra(Constants.key_username, username);
-                            startActivity(intent);
-                        }
-                        else {
-                            Toast.makeText(this,
-                                    "Password must contain a capital letter, lowercase letter, and a number",
-                                    Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                    else {
-                        Toast.makeText(this,
-                                "Password must contain at least 6 characters",
-                                Toast.LENGTH_SHORT).show();
-                    }
-
-
                 }
             }
             else {

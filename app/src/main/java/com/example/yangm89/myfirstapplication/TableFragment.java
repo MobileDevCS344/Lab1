@@ -2,6 +2,8 @@ package com.example.yangm89.myfirstapplication;
 
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
+import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,6 +12,7 @@ import android.view.ViewGroup;
 import android.support.v4.app.Fragment;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 
@@ -22,9 +25,8 @@ public class TableFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
-        setRetainInstance(true);
+       // setRetainInstance(true);
     }
 
     @Override
@@ -36,6 +38,11 @@ public class TableFragment extends Fragment {
 
     public void onResume() {
         super.onResume();
+
+        Drawable table1Image = mListener.getTable1Drawable();
+        ((ImageView) getActivity().findViewById(R.id.imageView_p1Play)).setImageDrawable(table1Image);
+        Drawable table2Image = mListener.getTable2Drawable();
+        ((ImageView) getActivity().findViewById(R.id.imageView_p2Play)).setImageDrawable(table2Image);
     }
 
     @Override
@@ -57,6 +64,7 @@ public class TableFragment extends Fragment {
 
     public interface OnFragmentInteractionListener {
         //3 - Ensure the activity implements this activity
-        String updateMathHistory();
+        Drawable getTable1Drawable();
+        Drawable getTable2Drawable();
     }
 }

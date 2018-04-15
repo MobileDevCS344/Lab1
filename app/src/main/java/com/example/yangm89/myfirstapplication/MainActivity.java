@@ -12,6 +12,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.media.Image;
 
+import android.os.Parcelable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v4.app.FragmentTransaction;
@@ -41,10 +42,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ArrayList<String> chatHistory, mathHistory;
     private int correct_answer = -1, player_answer = -2;
     private String username;
-    private boolean tableVisible;
+    private boolean tableVisible, firstMathRun = true;
     private LinearLayoutFragment mathfragment;
     private TableFragment tableFragment;
     private String problem;
+    private Drawable table1Image, table2Image;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,21 +77,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         c2.setOnClickListener(this);
         c3.setOnClickListener(this);
 
-        tableFragment = (TableFragment) getSupportFragmentManager().findFragmentByTag(""+Constants.table_fragment_tag);
-
-        if(tableFragment == null) {
+        if(savedInstanceState == null) {
             //add the table fragment to the screen
             tableFragment = new TableFragment();
             tableFragment.setArguments(getIntent().getExtras());
             FragmentTransaction f = getSupportFragmentManager().beginTransaction();
-            f.add(R.id.fragment_container, tableFragment, ""+Constants.table_fragment_tag);
+            f.add(R.id.fragment_container, tableFragment, "" + Constants.table_fragment_tag);
             f.commit();
             //set bidding boolean to true because we are initially bidding
             tableVisible = true;
         }
-
-
-
 
     }
 
@@ -103,11 +100,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onSaveInstanceState(outState);
         outState.putStringArrayList("chatHistory", chatHistory);
         outState.putStringArrayList("mathHistory", mathHistory);
+        outState.putBoolean("firstMathRun", firstMathRun);
+        outState.putString("currentMathProblem", problem);
+        outState.putInt("correctAnswer", correct_answer);
 
         //put all the images in a save instance state
         ImageView c1ImageView = ((ImageView)findViewById(R.id.imageView_card1));
         ImageView c2ImageView = ((ImageView) findViewById(R.id.imageView_card2));
         ImageView c3ImageView = ((ImageView) findViewById(R.id.imageView_card3));
+        ImageView table1ImageView = ((ImageView) findViewById(R.id.imageView_p1Play));
+        ImageView table2ImageView = ((ImageView) findViewById(R.id.imageView_p2Play));
 
        if(c1ImageView.getDrawable() instanceof BitmapDrawable){
             BitmapDrawable c1_bitmapDrawable = (BitmapDrawable) c1ImageView.getDrawable();
@@ -127,6 +129,44 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             outState.putParcelable("c3Image", c3_bitmap);
         }
 
+        //keep table1 images synced
+        if(tableVisible){
+            if(table1ImageView.getDrawable() instanceof BitmapDrawable){
+                BitmapDrawable table1_bitmapDrawable = (BitmapDrawable) table1ImageView.getDrawable();
+                Bitmap table1_bitmap = table1_bitmapDrawable.getBitmap();
+                outState.putParcelable("table1Image", table1_bitmap);
+            }
+        }
+        else if(table1ImageView != null){
+            BitmapDrawable table1_bitmapDrawable = (BitmapDrawable) table1ImageView.getDrawable();
+            Bitmap table1_bitmap = table1_bitmapDrawable.getBitmap();
+            outState.putParcelable("table1Image", table1_bitmap);
+        }
+        else if(table1Image != null){
+           BitmapDrawable table1_bitmapDrawable = (BitmapDrawable) table1Image;
+           Bitmap table1_bitmap = table1_bitmapDrawable.getBitmap();
+           outState.putParcelable("table1Image", table1_bitmap);
+        }
+
+        //keep table 2 images synced
+        if(tableVisible){
+            if(table2ImageView.getDrawable() instanceof BitmapDrawable){
+                BitmapDrawable table2_bitmapDrawable = (BitmapDrawable) table2ImageView.getDrawable();
+                Bitmap table2_bitmap = table2_bitmapDrawable.getBitmap();
+                outState.putParcelable("table2Image", table2_bitmap);
+            }
+        }
+        else if(table2ImageView != null){
+            BitmapDrawable table2_bitmapDrawable = (BitmapDrawable) table2ImageView.getDrawable();
+            Bitmap table2_bitmap = table2_bitmapDrawable.getBitmap();
+            outState.putParcelable("table2Image", table2_bitmap);
+        }
+        else if(table2Image != null){
+            BitmapDrawable table2_bitmapDrawable = (BitmapDrawable) table2Image;
+            Bitmap table2_bitmap = table2_bitmapDrawable.getBitmap();
+            outState.putParcelable("table2Image", table2_bitmap);
+        }
+
     }
 
     @Override
@@ -138,6 +178,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             StringBuilder mathHistSb = new StringBuilder();
             chatHistory = savedInstanceState.getStringArrayList("chatHistory");
             mathHistory = savedInstanceState.getStringArrayList("mathHistory");
+            problem = savedInstanceState.getString("currentMathProblem");
+
             if (getResources().getConfiguration().orientation ==
                     Configuration.ORIENTATION_LANDSCAPE){
                 for(int i = chatHistory.size()-1; i >= 0; i--) {
@@ -164,6 +206,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             ((ImageView) findViewById(R.id.imageView_card2)).setImageBitmap(c2_bitmap);
             Bitmap c3_bitmap = savedInstanceState.getParcelable("c3Image");
             ((ImageView) findViewById(R.id.imageView_card3)).setImageBitmap(c3_bitmap);
+            Bitmap table1_bitmap = savedInstanceState.getParcelable("table1Image");
+            table1Image = new BitmapDrawable(getResources(), table1_bitmap);
+            Bitmap table2_bitmap = savedInstanceState.getParcelable("table2Image");
+            table2Image = new BitmapDrawable(getResources(), table2_bitmap);
+
+            firstMathRun = savedInstanceState.getBoolean("firstMathRun");
+            correct_answer = savedInstanceState.getInt("correctAnswer");
 
         }
     }
@@ -188,11 +237,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             ImageView table2 = (ImageView) findViewById(R.id.imageView_p2Play);
                             if(table1.getDrawable() == null){
                                 table1.setImageDrawable(c1.getDrawable());
+                                table1Image = c1.getDrawable();
                                 c1.setImageResource(android.R.color.transparent);
                             }
                             else if(table2.getDrawable() == null){
                                 table2.setImageDrawable(c1.getDrawable());
                                 c1.setImageResource(android.R.color.transparent);
+                                table2Image = c1.getDrawable();
                             }
                         }
                     }
@@ -226,10 +277,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             ImageView table2 = (ImageView) findViewById(R.id.imageView_p2Play);
                             if(table1.getDrawable() == null){
                                 table1.setImageDrawable(c2.getDrawable());
+                                table1Image = c2.getDrawable();
                                 c2.setImageResource(android.R.color.transparent);
                             }
                             else if(table2.getDrawable() == null){
                                 table2.setImageDrawable(c2.getDrawable());
+                                table2Image = c2.getDrawable();
                                 c2.setImageResource(android.R.color.transparent);
                             }
                         }
@@ -264,10 +317,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             ImageView table2 = (ImageView) findViewById(R.id.imageView_p2Play);
                             if(table1.getDrawable() == null){
                                 table1.setImageDrawable(c3.getDrawable());
+                                table1Image = c3.getDrawable();
                                 c3.setImageResource(android.R.color.transparent);
                             }
                             else if(table2.getDrawable() == null){
                                 table2.setImageDrawable(c3.getDrawable());
+                                table2Image = c3.getDrawable();
                                 c3.setImageResource(android.R.color.transparent);
                             }
                         }
@@ -311,7 +366,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             ((TextView)findViewById(R.id.textView_chatHist)).setText(s);
             ((EditText)findViewById(R.id.editText_chatMsg)).setText("");
         }
-        else if(msg.trim().toLowerCase().equals("table") && !tableVisible){
+        else if(msg.trim().toLowerCase().equals("table")){
             //add the table fragment to the screen
             tableFragment = new TableFragment();
             tableFragment.setArguments(getIntent().getExtras());
@@ -325,6 +380,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             c1.setOnClickListener(this);
             c2.setOnClickListener(this);
             c3.setOnClickListener(this);
+
+            for(int i = chatHistory.size()-1; i >= 0; i--) {
+                temp = username + ": " + chatHistory.get(i) + "\n";
+                s.append(temp);
+            }
+
+            ((TextView)findViewById(R.id.textView_chatHist)).setText(s);
+            ((EditText)findViewById(R.id.editText_chatMsg)).setText("");
         }
         else {
             for(int i = chatHistory.size()-1; i >= 0; i--) {
@@ -385,9 +448,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
         problem = randomNum1 + " " + operators[randomIndex] + " " + randomNum2 + " = ";
-        ((TextView)findViewById(R.id.textView_mathProb)).setText(problem);
-        mathHistory.add(problem + test_answer);
+       // ((TextView)findViewById(R.id.textView_mathProb)).setText(problem);
         correct_answer = test_answer;
+       // mathHistory.add(problem + test_answer);
     }
 
     public int calculate(int num1, String oper, int num2){
@@ -407,10 +470,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         player_answer = answer;
     }
 
-    public int getPlayerAnswer(){
-        return player_answer;
-    }
-
     public String updateMathHistory(){
         String temp;
         StringBuilder s = new StringBuilder();
@@ -422,7 +481,29 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         return s.toString();
     }
 
+    public boolean isFirstMathRun(){
+        return firstMathRun;
+    }
 
+    public void setFirstMathRun(boolean b){
+        firstMathRun = b;
+    }
+
+    public void addToMathHistory(String h, int test_answer){
+        mathHistory.add(problem + test_answer);
+    }
+
+    public String getProblem(){
+        return problem;
+    }
+
+    public Drawable getTable1Drawable(){
+        return table1Image;
+    }
+
+    public Drawable getTable2Drawable(){
+        return table2Image;
+    }
 }
 
 
