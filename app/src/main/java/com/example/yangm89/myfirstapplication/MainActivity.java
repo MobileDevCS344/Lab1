@@ -88,6 +88,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             tableVisible = true;
         }
 
+        table1Image = null;
+        table2Image = null;
+
     }
 
     @Override
@@ -130,42 +133,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
         //keep table1 images synced
-        if(tableVisible){
-            if(table1ImageView.getDrawable() instanceof BitmapDrawable){
-                BitmapDrawable table1_bitmapDrawable = (BitmapDrawable) table1ImageView.getDrawable();
-                Bitmap table1_bitmap = table1_bitmapDrawable.getBitmap();
-                outState.putParcelable("table1Image", table1_bitmap);
-            }
-        }
-        else if(table1ImageView != null){
-            BitmapDrawable table1_bitmapDrawable = (BitmapDrawable) table1ImageView.getDrawable();
-            Bitmap table1_bitmap = table1_bitmapDrawable.getBitmap();
-            outState.putParcelable("table1Image", table1_bitmap);
-        }
-        else if(table1Image != null){
+        if(table1Image != null){
            BitmapDrawable table1_bitmapDrawable = (BitmapDrawable) table1Image;
            Bitmap table1_bitmap = table1_bitmapDrawable.getBitmap();
            outState.putParcelable("table1Image", table1_bitmap);
         }
 
         //keep table 2 images synced
-        if(tableVisible){
-            if(table2ImageView.getDrawable() instanceof BitmapDrawable){
-                BitmapDrawable table2_bitmapDrawable = (BitmapDrawable) table2ImageView.getDrawable();
-                Bitmap table2_bitmap = table2_bitmapDrawable.getBitmap();
-                outState.putParcelable("table2Image", table2_bitmap);
-            }
-        }
-        else if(table2ImageView != null){
-            BitmapDrawable table2_bitmapDrawable = (BitmapDrawable) table2ImageView.getDrawable();
-            Bitmap table2_bitmap = table2_bitmapDrawable.getBitmap();
-            outState.putParcelable("table2Image", table2_bitmap);
-        }
-        else if(table2Image != null){
+        if(table2Image != null){
             BitmapDrawable table2_bitmapDrawable = (BitmapDrawable) table2Image;
             Bitmap table2_bitmap = table2_bitmapDrawable.getBitmap();
             outState.putParcelable("table2Image", table2_bitmap);
         }
+
 
     }
 
@@ -206,10 +186,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             ((ImageView) findViewById(R.id.imageView_card2)).setImageBitmap(c2_bitmap);
             Bitmap c3_bitmap = savedInstanceState.getParcelable("c3Image");
             ((ImageView) findViewById(R.id.imageView_card3)).setImageBitmap(c3_bitmap);
-            Bitmap table1_bitmap = savedInstanceState.getParcelable("table1Image");
-            table1Image = new BitmapDrawable(getResources(), table1_bitmap);
-            Bitmap table2_bitmap = savedInstanceState.getParcelable("table2Image");
-            table2Image = new BitmapDrawable(getResources(), table2_bitmap);
+            if(savedInstanceState.getParcelable("table1Image") != null){
+                Bitmap table1_bitmap = savedInstanceState.getParcelable("table1Image");
+                table1Image = new BitmapDrawable(getResources(), table1_bitmap);
+            }
+            else {
+                table1Image = null;
+            }
+            if(savedInstanceState.getParcelable("table2Image")!= null){
+                Bitmap table2_bitmap = savedInstanceState.getParcelable("table2Image");
+                table2Image = new BitmapDrawable(getResources(), table2_bitmap);
+            }
+            else {
+                table2Image = null;
+            }
 
             firstMathRun = savedInstanceState.getBoolean("firstMathRun");
             correct_answer = savedInstanceState.getInt("correctAnswer");
@@ -235,7 +225,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         if(((ColorDrawable)c1.getBackground()).getColor() == getResources().getColor(R.color.cardBackgroundSkyBlue)) {
                             ImageView table1 = (ImageView) findViewById(R.id.imageView_p1Play);
                             ImageView table2 = (ImageView) findViewById(R.id.imageView_p2Play);
-                            if(table1.getDrawable() == null){
+                            if(table1.getDrawable() == null ){
                                 table1.setImageDrawable(c1.getDrawable());
                                 table1Image = c1.getDrawable();
                                 c1.setImageResource(android.R.color.transparent);
@@ -448,9 +438,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
         problem = randomNum1 + " " + operators[randomIndex] + " " + randomNum2 + " = ";
-       // ((TextView)findViewById(R.id.textView_mathProb)).setText(problem);
         correct_answer = test_answer;
-       // mathHistory.add(problem + test_answer);
     }
 
     public int calculate(int num1, String oper, int num2){

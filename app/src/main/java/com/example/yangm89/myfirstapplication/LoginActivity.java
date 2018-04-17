@@ -189,10 +189,6 @@ public class LoginActivity extends AppCompatActivity {
                     String id = cursor.getString(cursor.getColumnIndexOrThrow(MyDBContract.DBEntry.COLUMN_NAME_USER_ID));
                     String pw = cursor.getString(cursor.getColumnIndexOrThrow(MyDBContract.DBEntry.COLUMN_NAME_PASSWORD));
 
-                    Toast.makeText(this,
-                            "id " + id,
-                            Toast.LENGTH_LONG).show();
-
                     //check if the id and password is valid
                     if(username.equals(id)){
                         if(password.equals(pw)){

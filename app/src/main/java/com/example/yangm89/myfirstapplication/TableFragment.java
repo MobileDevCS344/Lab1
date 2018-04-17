@@ -2,6 +2,8 @@ package com.example.yangm89.myfirstapplication;
 
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.media.Image;
 import android.os.Bundle;
@@ -14,6 +16,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 public class TableFragment extends Fragment {
@@ -40,9 +43,14 @@ public class TableFragment extends Fragment {
         super.onResume();
 
         Drawable table1Image = mListener.getTable1Drawable();
-        ((ImageView) getActivity().findViewById(R.id.imageView_p1Play)).setImageDrawable(table1Image);
+        if(table1Image != null){
+            ((ImageView) getActivity().findViewById(R.id.imageView_p1Play)).setImageDrawable(table1Image);
+        }
         Drawable table2Image = mListener.getTable2Drawable();
-        ((ImageView) getActivity().findViewById(R.id.imageView_p2Play)).setImageDrawable(table2Image);
+        if(table2Image != null ){
+            ((ImageView) getActivity().findViewById(R.id.imageView_p2Play)).setImageDrawable(table2Image);
+        }
+
     }
 
     @Override
