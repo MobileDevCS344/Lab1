@@ -163,7 +163,7 @@ public class LoginActivity extends AppCompatActivity {
     private void register(final String username, final String password){
 
         RequestQueue queue = Volley.newRequestQueue(this);
-       // queue.start();
+        // queue.start();
 
         Toast.makeText(LoginActivity.this, "PASSWORD " + password, Toast.LENGTH_LONG).show();
         Toast.makeText(LoginActivity.this, "USERNAME " + username, Toast.LENGTH_LONG).show();
@@ -174,7 +174,7 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
                         Toast.makeText(LoginActivity.this, "RESPONSE " + response, Toast.LENGTH_LONG).show();
-                       setServerResponse(response);
+                        setServerResponse(response);
                     }
                 }, new Response.ErrorListener() {
 
