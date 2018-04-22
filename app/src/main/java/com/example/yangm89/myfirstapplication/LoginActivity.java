@@ -16,10 +16,20 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 public class LoginActivity extends AppCompatActivity {
     public final Pattern textPattern = Pattern.compile("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).+$");
+    String serverResponse = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +67,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void goToMainActivity(View view){
-        Intent intent = new Intent(this, MainActivity.class);
+
         CheckBox register = ((CheckBox)findViewById(R.id.checkBox_register));
         CheckBox login = ((CheckBox)findViewById(R.id.checkBox_login));
 
@@ -66,100 +76,28 @@ public class LoginActivity extends AppCompatActivity {
         SQLiteDatabase rdb = mdbh.getReadableDatabase();
         ContentValues values = new ContentValues();
 
-
-
         //if register is checked
         if(register.isChecked()){
-            String username = ((EditText)findViewById(R.id.editText_username)).getText().toString();
-            String password = ((EditText)findViewById(R.id.editText_password)).getText().toString();
-
-            String selection = MyDBContract.DBEntry.COLUMN_NAME_USER_ID + " GLOB ? " ;
-            String[] selectionArgs = { username };
-            String[] projection = {MyDBContract.DBEntry.COLUMN_NAME_USER_ID, MyDBContract.DBEntry.COLUMN_NAME_PASSWORD};
-            String sortOrder = MyDBContract.DBEntry.COLUMN_NAME_USER_ID + " DESC";
-            Cursor cursor = rdb.query(MyDBContract.DBEntry.TABLE_NAME,
-                    projection,
-                    selection,
-                    selectionArgs,
-                    null,
-                    null,
-                    sortOrder);
+            final String username = ((EditText)findViewById(R.id.editText_username)).getText().toString();
+            final String password = ((EditText)findViewById(R.id.editText_password)).getText().toString();
 
             if(username.length() >= 4){
-                //check if username already exists
-                if(cursor.getCount() == 0){
-                    if(password.length() >= 6){
-                        if(isTextValid(password)){
+                if(password.length() >= 6){
+                    if(isTextValid(password)){
 
-
-                            //add the user info to the values
-                       //     values.put(MyDBContract.DBEntry._ID, 1);
-                            values.put(MyDBContract.DBEntry.COLUMN_NAME_USER_ID, username);
-                            values.put(MyDBContract.DBEntry.COLUMN_NAME_PASSWORD, password);
-                            //create a row in the database
-                            long rowId = db.insert(MyDBContract.DBEntry.TABLE_NAME, null, values);
-
-                            intent.putExtra(Constants.key_username, username);
-                            startActivity(intent);
-                        }
-                        else {
-                            Toast.makeText(this,
-                                    "Password must contain a capital letter, lowercase letter, and a number",
-                                    Toast.LENGTH_SHORT).show();
-                        }
+                        register(username, password);
                     }
-                    else {
-                        Toast.makeText(this,
-                                "Password must contain at least 6 characters",
-                                Toast.LENGTH_SHORT).show();
-                    }
-                }
-                else if(cursor.getCount() > 0){
-                    cursor.moveToFirst();
-                    while(!cursor.isAfterLast()) {
-                        String id = cursor.getString(cursor.getColumnIndexOrThrow(MyDBContract.DBEntry.COLUMN_NAME_USER_ID));
-                        if(id.equals(username)){
-                            Toast.makeText(this,
-                                    "The username " + username + " is already taken.",
-                                    Toast.LENGTH_SHORT).show();
-                            break;
-                        }
-                        cursor.moveToNext();
+                    else{
+                        Toast.makeText(this, "Password must contain a capital letter, lowercase letter, and a number.", Toast.LENGTH_SHORT).show();
                     }
                 }
                 else {
-                    if(password.length() >= 6){
-                        if(isTextValid(password)){
-                            //add the user info to the values
-                            //     values.put(MyDBContract.DBEntry._ID, 1);
-                            values.put(MyDBContract.DBEntry.COLUMN_NAME_USER_ID, username);
-                            values.put(MyDBContract.DBEntry.COLUMN_NAME_PASSWORD, password);
-                            //create a row in the database
-                            db.insert(MyDBContract.DBEntry.TABLE_NAME, null, values);
-
-                            intent.putExtra(Constants.key_username, username);
-                            startActivity(intent);
-                        }
-                        else {
-                            Toast.makeText(this,
-                                    "Password must contain a capital letter, lowercase letter, and a number",
-                                    Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                    else {
-                        Toast.makeText(this,
-                                "Password must contain at least 6 characters",
-                                Toast.LENGTH_SHORT).show();
-                    }
+                    Toast.makeText(this, "Password must be at least 6 characters in length.", Toast.LENGTH_SHORT).show();
                 }
             }
             else {
-                Toast.makeText(this,
-                        "Username must contain at least 4 characters.",
-                        Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Username must be at least 4 characters in length.", Toast.LENGTH_SHORT).show();
             }
-
-            cursor.close();
         }
         else if(login.isChecked()){
             //get the typed in username and password
@@ -192,6 +130,7 @@ public class LoginActivity extends AppCompatActivity {
                     //check if the id and password is valid
                     if(username.equals(id)){
                         if(password.equals(pw)){
+                            Intent intent = new Intent(this, MainActivity.class);
                             intent.putExtra(Constants.key_username, username);
                             startActivity(intent);
                         }
@@ -217,7 +156,68 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    public boolean isTextValid(String textToCheck) {
+    private boolean isTextValid(String textToCheck) {
         return textPattern.matcher(textToCheck).matches();
     }
+
+    private void register(final String username, final String password){
+
+        RequestQueue queue = Volley.newRequestQueue(this);
+       // queue.start();
+
+        Toast.makeText(LoginActivity.this, "PASSWORD " + password, Toast.LENGTH_LONG).show();
+        Toast.makeText(LoginActivity.this, "USERNAME " + username, Toast.LENGTH_LONG).show();
+
+        String url = "http://webdev.cs.uwosh.edu/students/yangm89/AndroidPHP/register_query.php";
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Toast.makeText(LoginActivity.this, "RESPONSE " + response, Toast.LENGTH_LONG).show();
+                       setServerResponse(response);
+                    }
+                }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+                Toast.makeText(LoginActivity.this, "There was an error connecting to the database. Please try again later.", Toast.LENGTH_SHORT).show();
+            }
+        }
+        ){
+            @Override
+            protected Map<String, String> getParams()
+            {
+                Map<String, String>  params = new HashMap<String, String>();
+
+                params.put("username", username);
+                params.put("password", password);
+                return params;
+            }
+        };
+
+        queue.add(stringRequest);
+        if(serverResponse.equals("Username already exists.")){
+            Toast.makeText(this , serverResponse, Toast.LENGTH_SHORT).show();
+        }
+        else {
+            if(serverResponse.equals("Successfully registered and signed in.")){
+                Toast.makeText(this, serverResponse, Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(this, MainActivity.class);
+                intent.putExtra(Constants.key_username, username);
+                startActivity(intent);
+                //finish();
+            }
+        }
+
+    }
+
+    private String getResponse(){
+        return serverResponse;
+    }
+
+    private void setServerResponse(String r){
+        serverResponse = r;
+    }
+
 }
