@@ -168,12 +168,13 @@ public class LoginActivity extends AppCompatActivity {
         Toast.makeText(LoginActivity.this, "PASSWORD " + password, Toast.LENGTH_LONG).show();
         Toast.makeText(LoginActivity.this, "USERNAME " + username, Toast.LENGTH_LONG).show();
 
-        String url = "http://webdev.cs.uwosh.edu/students/yangm89/AndroidPHP/register_query.php";
+        String url = "http://webdev.cs.uwosh.edu/students/yangm89/AndroidPHP/register_query.php?username="+username+"&password="+password;
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         Toast.makeText(LoginActivity.this, "RESPONSE " + response, Toast.LENGTH_LONG).show();
+                        Log.d("Error message", response);
                         setServerResponse(response);
                     }
                 }, new Response.ErrorListener() {
