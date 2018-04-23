@@ -104,55 +104,7 @@ public class LoginActivity extends AppCompatActivity {
             String username = ((EditText)findViewById(R.id.editText_username)).getText().toString();
             String password = ((EditText)findViewById(R.id.editText_password)).getText().toString();
 
-            //check username and password against the database
-            String selection = MyDBContract.DBEntry.COLUMN_NAME_USER_ID + " GLOB ? " ;
-            String[] selectionArgs = { username };
-            String[] projection = {MyDBContract.DBEntry.COLUMN_NAME_USER_ID, MyDBContract.DBEntry.COLUMN_NAME_PASSWORD};
-            String sortOrder = MyDBContract.DBEntry.COLUMN_NAME_USER_ID + " DESC";
-            Cursor cursor = rdb.query(MyDBContract.DBEntry.TABLE_NAME,
-                    projection,
-                    selection,
-                    selectionArgs,
-                    null,
-                    null,
-                    sortOrder);
-            if(cursor.getCount()==0){
-                Toast.makeText(this,
-                        "Username " + username + " does not exist. Please register first.",
-                        Toast.LENGTH_SHORT).show();
-            }
-            else {
-                cursor.moveToFirst();
-                while(!cursor.isAfterLast()){
-                    String id = cursor.getString(cursor.getColumnIndexOrThrow(MyDBContract.DBEntry.COLUMN_NAME_USER_ID));
-                    String pw = cursor.getString(cursor.getColumnIndexOrThrow(MyDBContract.DBEntry.COLUMN_NAME_PASSWORD));
-
-                    //check if the id and password is valid
-                    if(username.equals(id)){
-                        if(password.equals(pw)){
-                            Intent intent = new Intent(this, MainActivity.class);
-                            intent.putExtra(Constants.key_username, username);
-                            startActivity(intent);
-                        }
-                        else {
-                            Toast.makeText(this,
-                                    "Incorrect username and password combination.",
-                                    Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                    else {
-                        Toast.makeText(this,
-                                "Incorrect username. Please check the spelling of the username",
-                                Toast.LENGTH_SHORT).show();
-                    }
-
-                    cursor.moveToNext();
-                }
-
-                cursor.close();
-            }
-
-
+            login(username, password);
         }
     }
 
@@ -163,64 +115,76 @@ public class LoginActivity extends AppCompatActivity {
     private void register(final String username, final String password){
 
         RequestQueue queue = Volley.newRequestQueue(this);
-        // queue.start();
+        //Toast.makeText(LoginActivity.this, "PASSWORD " + password, Toast.LENGTH_LONG).show();
+       // Toast.makeText(LoginActivity.this, "USERNAME " + username, Toast.LENGTH_LONG).show();
 
-        Toast.makeText(LoginActivity.this, "PASSWORD " + password, Toast.LENGTH_LONG).show();
-        Toast.makeText(LoginActivity.this, "USERNAME " + username, Toast.LENGTH_LONG).show();
-
-        String url = "http://webdev.cs.uwosh.edu/students/yangm89/AndroidPHP/register_query.php?username="+username+"&password="+password;
+        String url = Constants.root_url + "register_query.php?username="+username+"&password="+password;
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Toast.makeText(LoginActivity.this, "RESPONSE " + response, Toast.LENGTH_LONG).show();
-                        Log.d("Error message", response);
                         setServerResponse(response);
                     }
                 }, new Response.ErrorListener() {
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                error.printStackTrace();
                 Toast.makeText(LoginActivity.this, "There was an error connecting to the database. Please try again later.", Toast.LENGTH_SHORT).show();
             }
         }
-        ){
-            @Override
-            protected Map<String, String> getParams()
-            {
-                Map<String, String>  params = new HashMap<String, String>();
-
-                params.put("username", username);
-                params.put("password", password);
-                return params;
-            }
-        };
+        );
 
         queue.add(stringRequest);
 
-        if(serverResponse.equals("Successfully registered and signed in.")){
-            Intent intent = new Intent(this, MainActivity.class);
-            intent.putExtra(Constants.key_username, username);
-            startActivity(intent);
-        }
-        else if(serverResponse.equals("Username already exists.")){
+        if(serverResponse.equals("Username already exists.")){
             Toast.makeText(this , serverResponse, Toast.LENGTH_SHORT).show();
         }
-        else {
-            if(serverResponse.equals("Successfully registered and signed in.")){
-                Toast.makeText(this, serverResponse, Toast.LENGTH_SHORT).show();
+        else if(serverResponse.equals("Successfully registered and signed in.")){
                 Intent intent = new Intent(this, MainActivity.class);
                 intent.putExtra(Constants.key_username, username);
                 startActivity(intent);
-                //finish();
-            }
+                finish();
+        }
+        else if(serverResponse.equals("Error registering and signing in.")){
+            Toast.makeText(this, serverResponse, Toast.LENGTH_SHORT).show();
         }
 
     }
 
-    private String getResponse(){
-        return serverResponse;
+    private void login(final String username, final String password) {
+
+        RequestQueue queue = Volley.newRequestQueue(this);
+
+        String url = Constants.root_url + "login_query.php?username="+username+"&password="+password;
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        setServerResponse(response);
+                    }
+                }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(LoginActivity.this, "There was an error connecting to the database. Please try again later.", Toast.LENGTH_SHORT).show();
+            }
+        }
+        );
+
+        queue.add(stringRequest);
+
+        Toast.makeText(this, "SERVER RESPONSE " + serverResponse, Toast.LENGTH_SHORT).show();
+
+        if(serverResponse.equals("The username does not exist.")){
+            Toast.makeText(this , "The username " + username + " does not exist. " +
+                    "Please register first.", Toast.LENGTH_SHORT).show();
+        }
+        else if(serverResponse.equals("Successfully logged in.")){
+            Intent intent = new Intent(this, MainActivity.class);
+            intent.putExtra(Constants.key_username, username);
+            startActivity(intent);
+            finish();
+        }
     }
 
     private void setServerResponse(String r){
