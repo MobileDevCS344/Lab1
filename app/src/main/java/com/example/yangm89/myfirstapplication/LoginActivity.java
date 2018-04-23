@@ -198,7 +198,13 @@ public class LoginActivity extends AppCompatActivity {
         };
 
         queue.add(stringRequest);
-        if(serverResponse.equals("Username already exists.")){
+
+        if(serverResponse.equals("Successfully registered and signed in.")){
+            Intent intent = new Intent(this, MainActivity.class);
+            intent.putExtra(Constants.key_username, username);
+            startActivity(intent);
+        }
+        else if(serverResponse.equals("Username already exists.")){
             Toast.makeText(this , serverResponse, Toast.LENGTH_SHORT).show();
         }
         else {
