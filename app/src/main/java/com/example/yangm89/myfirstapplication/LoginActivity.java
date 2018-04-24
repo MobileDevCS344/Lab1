@@ -29,7 +29,6 @@ import java.util.regex.Pattern;
 
 public class LoginActivity extends AppCompatActivity {
     public final Pattern textPattern = Pattern.compile("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).+$");
-    String serverResponse = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,7 +102,6 @@ public class LoginActivity extends AppCompatActivity {
             //get the typed in username and password
             String username = ((EditText)findViewById(R.id.editText_username)).getText().toString();
             String password = ((EditText)findViewById(R.id.editText_password)).getText().toString();
-
             login(username, password);
         }
     }
@@ -115,15 +113,31 @@ public class LoginActivity extends AppCompatActivity {
     private void register(final String username, final String password){
 
         RequestQueue queue = Volley.newRequestQueue(this);
-        //Toast.makeText(LoginActivity.this, "PASSWORD " + password, Toast.LENGTH_LONG).show();
-       // Toast.makeText(LoginActivity.this, "USERNAME " + username, Toast.LENGTH_LONG).show();
+       // Toast.makeText(LoginActivity.this, "PASSWORD " + password, Toast.LENGTH_LONG).show();
+        //Toast.makeText(LoginActivity.this, "USERNAME " + username, Toast.LENGTH_LONG).show();
 
         String url = Constants.root_url + "register_query.php?username="+username+"&password="+password;
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        setServerResponse(response);
+                        if(response.equals("Username already exists.")){
+                            Toast.makeText(LoginActivity.this , "The username " + username + " already exists. Please register with a new username.", Toast.LENGTH_SHORT).show();
+                        }
+                        else if(response.equals("Successfully registered and signed in.")){
+                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                            intent.putExtra(Constants.key_username, username);
+                            startActivity(intent);
+                            finish();
+                        }
+                        else if(response.equals("Error registering and signing in.")){
+                            Toast.makeText(LoginActivity.this, "Please check your username and password.", Toast.LENGTH_SHORT).show();
+                        }
+                        else if(response.equals("Server is full.")){
+                            Toast.makeText(LoginActivity.this, "Successfully registered account. " +
+                                            "However, the server is currently full. Please try again later.",
+                                    Toast.LENGTH_SHORT).show();
+                        }
                     }
                 }, new Response.ErrorListener() {
 
@@ -135,19 +149,6 @@ public class LoginActivity extends AppCompatActivity {
         );
 
         queue.add(stringRequest);
-
-        if(serverResponse.equals("Username already exists.")){
-            Toast.makeText(this , serverResponse, Toast.LENGTH_SHORT).show();
-        }
-        else if(serverResponse.equals("Successfully registered and signed in.")){
-                Intent intent = new Intent(this, MainActivity.class);
-                intent.putExtra(Constants.key_username, username);
-                startActivity(intent);
-                finish();
-        }
-        else if(serverResponse.equals("Error registering and signing in.")){
-            Toast.makeText(this, serverResponse, Toast.LENGTH_SHORT).show();
-        }
 
     }
 
@@ -160,35 +161,33 @@ public class LoginActivity extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        setServerResponse(response);
+                        if(response.equals("The username does not exist.")){
+                            Toast.makeText(LoginActivity.this , "The username " + username + " does not exist. " +
+                                    "Please register first.", Toast.LENGTH_SHORT).show();
+                        }
+                        else if(response.equals("Successfully logged in.")){
+                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                            intent.putExtra(Constants.key_username, username);
+                            startActivity(intent);
+                            finish();
+                        }
+                        else if(response.equals("Server is full.")){
+                            Toast.makeText(LoginActivity.this, "The server is currently full. Please try again later.",
+                                    Toast.LENGTH_SHORT).show();
+                        }
                     }
                 }, new Response.ErrorListener() {
 
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(LoginActivity.this, "There was an error connecting to the database. Please try again later.", Toast.LENGTH_SHORT).show();
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Toast.makeText(LoginActivity.this, "There was an error connecting to the database. Please try again later.", Toast.LENGTH_SHORT).show();
+                }
             }
-        }
         );
 
         queue.add(stringRequest);
 
-        Toast.makeText(this, "SERVER RESPONSE " + serverResponse, Toast.LENGTH_SHORT).show();
-
-        if(serverResponse.equals("The username does not exist.")){
-            Toast.makeText(this , "The username " + username + " does not exist. " +
-                    "Please register first.", Toast.LENGTH_SHORT).show();
-        }
-        else if(serverResponse.equals("Successfully logged in.")){
-            Intent intent = new Intent(this, MainActivity.class);
-            intent.putExtra(Constants.key_username, username);
-            startActivity(intent);
-            finish();
-        }
     }
 
-    private void setServerResponse(String r){
-        serverResponse = r;
-    }
 
 }
