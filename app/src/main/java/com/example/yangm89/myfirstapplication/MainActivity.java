@@ -30,6 +30,13 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
@@ -42,11 +49,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ArrayList<String> chatHistory, mathHistory;
     private int correct_answer = -1, player_answer = -2;
     private String username;
-    private boolean tableVisible, firstMathRun = true;
+    private boolean tableVisible, firstMathRun = true, firstHand = true;
     private LinearLayoutFragment mathfragment;
     private TableFragment tableFragment;
-    private String problem;
+    private String problem, playerId = "";
     private Drawable table1Image, table2Image;
+    private RequestQueue queue ;
+    private int[] handArray;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,9 +74,31 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         username = intent.getStringExtra(Constants.key_username);
         ((TextView)findViewById(R.id.textView_p1Label)).setText(username);
         ((TextView)findViewById(R.id.textView_p1CardRemLabel)).setText(username);
+        queue = Volley.newRequestQueue(this) ;
+
+        handArray = new int[3];
 
         //random image generator
-        generateRandomImg();
+      //  generateRandomImg();
+
+        String url = Constants.root_url + "get_player_id.php?username=" + username ;
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        playerId = response ;
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+                    }
+                }
+        ) ;
+
+        queue.add(stringRequest) ;
+
         c1 = (ImageView) findViewById(R.id.imageView_card1);
         c2 = (ImageView) findViewById(R.id.imageView_card2);
         c3 = (ImageView) findViewById(R.id.imageView_card3);
@@ -86,15 +117,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             f.commit();
             //set bidding boolean to true because we are initially bidding
             tableVisible = true;
+            //uncomment active count after testing
+            //getActiveCount();
+            getHand() ;
+            firstHand = false ;
         }
 
         table1Image = null;
         table2Image = null;
-
     }
 
     @Override
     public void onStart(){
+
         super.onStart();
     }
 
@@ -106,13 +141,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         outState.putBoolean("firstMathRun", firstMathRun);
         outState.putString("currentMathProblem", problem);
         outState.putInt("correctAnswer", correct_answer);
+        outState.putBoolean("firtHand", firstHand);
 
         //put all the images in a save instance state
         ImageView c1ImageView = ((ImageView)findViewById(R.id.imageView_card1));
         ImageView c2ImageView = ((ImageView) findViewById(R.id.imageView_card2));
         ImageView c3ImageView = ((ImageView) findViewById(R.id.imageView_card3));
-        ImageView table1ImageView = ((ImageView) findViewById(R.id.imageView_p1Play));
-        ImageView table2ImageView = ((ImageView) findViewById(R.id.imageView_p2Play));
 
        if(c1ImageView.getDrawable() instanceof BitmapDrawable){
             BitmapDrawable c1_bitmapDrawable = (BitmapDrawable) c1ImageView.getDrawable();
@@ -153,12 +187,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onRestoreInstanceState(Bundle savedInstanceState){
         super.onRestoreInstanceState(savedInstanceState);
 
+
         if(savedInstanceState != null){
             StringBuilder chatSb = new StringBuilder();
             StringBuilder mathHistSb = new StringBuilder();
             chatHistory = savedInstanceState.getStringArrayList("chatHistory");
             mathHistory = savedInstanceState.getStringArrayList("mathHistory");
             problem = savedInstanceState.getString("currentMathProblem");
+            firstHand = savedInstanceState.getBoolean("firstHand") ;
 
             if (getResources().getConfiguration().orientation ==
                     Configuration.ORIENTATION_LANDSCAPE){
@@ -225,15 +261,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         if(((ColorDrawable)c1.getBackground()).getColor() == getResources().getColor(R.color.cardBackgroundSkyBlue)) {
                             ImageView table1 = (ImageView) findViewById(R.id.imageView_p1Play);
                             ImageView table2 = (ImageView) findViewById(R.id.imageView_p2Play);
-                            if(table1.getDrawable() == null ){
+                            if(playerId.equals("1") && table1.getDrawable()== null){
                                 table1.setImageDrawable(c1.getDrawable());
                                 table1Image = c1.getDrawable();
                                 c1.setImageResource(android.R.color.transparent);
+                                String index = handArray[0] + "" ;
+                                updateCardPlayedInDB(index);
                             }
-                            else if(table2.getDrawable() == null){
+                            else if(playerId.equals("2") && table2.getDrawable()== null){
                                 table2.setImageDrawable(c1.getDrawable());
                                 c1.setImageResource(android.R.color.transparent);
                                 table2Image = c1.getDrawable();
+                                String index = handArray[0] + "" ;
+                                updateCardPlayedInDB(index);
                             }
                         }
                     }
@@ -265,15 +305,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         if(((ColorDrawable)c2.getBackground()).getColor() == getResources().getColor(R.color.cardBackgroundSkyBlue)) {
                             ImageView table1 = (ImageView) findViewById(R.id.imageView_p1Play);
                             ImageView table2 = (ImageView) findViewById(R.id.imageView_p2Play);
-                            if(table1.getDrawable() == null){
+                            if(playerId.equals("1") && table1.getDrawable()== null){
                                 table1.setImageDrawable(c2.getDrawable());
                                 table1Image = c2.getDrawable();
                                 c2.setImageResource(android.R.color.transparent);
+                                String index = handArray[1] + "" ;
+                                updateCardPlayedInDB(index);
                             }
-                            else if(table2.getDrawable() == null){
+                            else if(playerId.equals("2") && table2.getDrawable()== null){
                                 table2.setImageDrawable(c2.getDrawable());
                                 table2Image = c2.getDrawable();
                                 c2.setImageResource(android.R.color.transparent);
+                                String index = handArray[1] + "" ;
+                                updateCardPlayedInDB(index);
                             }
                         }
                     }
@@ -305,15 +349,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         if(((ColorDrawable)c3.getBackground()).getColor() == getResources().getColor(R.color.cardBackgroundSkyBlue)) {
                             ImageView table1 = (ImageView) findViewById(R.id.imageView_p1Play);
                             ImageView table2 = (ImageView) findViewById(R.id.imageView_p2Play);
-                            if(table1.getDrawable() == null){
+                            if(playerId.equals("1") && table1.getDrawable()== null){
                                 table1.setImageDrawable(c3.getDrawable());
                                 table1Image = c3.getDrawable();
                                 c3.setImageResource(android.R.color.transparent);
+                                String index = handArray[2] + "" ;
+                                updateCardPlayedInDB(index);
                             }
-                            else if(table2.getDrawable() == null){
+                            else if(playerId.equals("2") && table2.getDrawable()== null){
                                 table2.setImageDrawable(c3.getDrawable());
                                 table2Image = c3.getDrawable();
                                 c3.setImageResource(android.R.color.transparent);
+                                String index = handArray[2] + "" ;
+                                updateCardPlayedInDB(index);
                             }
                         }
                     }
@@ -392,33 +440,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
-    public void generateRandomImg() {
-        TypedArray cards = getResources().obtainTypedArray(R.array.my_cards);
-        Random random = new Random();
-        Log.e("cards", cards.length()+"");
-        int randomIndexOne = random.nextInt(52);
-        int randomIndexTwo = random.nextInt(52);
-        while(randomIndexOne == randomIndexTwo) {
-            randomIndexTwo = random.nextInt(52);
-        }
-        int randomIndexThree = random.nextInt(52);
-        while(randomIndexOne == randomIndexThree || randomIndexThree == randomIndexTwo) {
-            randomIndexThree = random.nextInt(52);
-        }
-
-        int rndImageC1 = cards.getResourceId(randomIndexOne, 0);
-        int rndImageC2 = cards.getResourceId(randomIndexTwo, 0);
-        int rndImageC3 = cards.getResourceId(randomIndexThree, 0);
-
-        ImageView viewC1 = (ImageView) findViewById(R.id.imageView_card1);
-        ImageView viewC2 = (ImageView) findViewById(R.id.imageView_card2);
-        ImageView viewC3 = (ImageView) findViewById(R.id.imageView_card3);
-        viewC1.setImageResource(rndImageC1);
-        viewC2.setImageResource(rndImageC2);
-        viewC3.setImageResource(rndImageC3);
-
-    }
-
 
     public void generateProblem(){
         int test_answer;
@@ -491,6 +512,136 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public Drawable getTable2Drawable(){
         return table2Image;
+    }
+
+    public void getActiveCount()
+    {
+      //  RequestQueue queue = Volley.newRequestQueue(this) ;
+        String url = Constants.root_url + "check_active.php";
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        while(!response.equals("2"))
+                        {
+                            getActiveCount();
+                        }
+
+                        getHand() ;
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+                    }
+                }
+        ) ;
+
+        queue.add(stringRequest) ;
+    }
+
+    public void getHand()
+    {
+      //  RequestQueue queue = Volley.newRequestQueue(this) ;
+        String url = Constants.root_url + "get_hand.php?username=" + username ;
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        if(!response.equals("Error") && !response.equals("There was an error logging into the database."))
+                        {
+                            String[] tempArr = response.split(",") ;
+                            for(int i = 0; i < tempArr.length ; i++)
+                            {
+                                handArray[i] = Integer.parseInt(tempArr[i]) ;
+                            }
+
+                            generateHandImgs() ;
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+                    }
+                }
+        ) ;
+
+        queue.add(stringRequest) ;
+    }
+
+    public void generateHandImgs() {
+        TypedArray cards = getResources().obtainTypedArray(R.array.my_cards);
+
+        int rndImageC1 = cards.getResourceId(handArray[0], 0);
+        int rndImageC2 = cards.getResourceId(handArray[1], 0);
+        int rndImageC3 = cards.getResourceId(handArray[2], 0);
+
+        ImageView viewC1 = (ImageView) findViewById(R.id.imageView_card1);
+        ImageView viewC2 = (ImageView) findViewById(R.id.imageView_card2);
+        ImageView viewC3 = (ImageView) findViewById(R.id.imageView_card3);
+        viewC1.setImageResource(rndImageC1);
+        viewC2.setImageResource(rndImageC2);
+        viewC3.setImageResource(rndImageC3);
+    }
+
+
+
+    public void updateCardPlayedInDB(String index)
+    {
+        String url = Constants.root_url + "update_card_played.php?username=" + username + "&index="
+                + index ;
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Toast.makeText(MainActivity.this, response + " in updatedCardPlayed", Toast.LENGTH_SHORT).show();
+                        if(response.equals("Error"))
+                        {
+                            Toast.makeText(MainActivity.this, "Server error.", Toast.LENGTH_SHORT).show(); ;
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+                    }
+                }
+        ) ;
+
+        queue.add(stringRequest) ;
+    }
+
+    public void checkHowManyCardsPlayed()
+    {
+        String url = Constants.root_url + "how_many_cards_played.php" ;
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        while(!response.equals("0"))
+                        {
+                            checkHowManyCardsPlayed();
+                        }
+
+                        checkRoundWinner() ;
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+                    }
+                }
+        ) ;
+    }
+
+    public void checkRoundWinner()
+    {
+        //do something
     }
 }
 

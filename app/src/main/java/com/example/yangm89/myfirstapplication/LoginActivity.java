@@ -70,11 +70,6 @@ public class LoginActivity extends AppCompatActivity {
         CheckBox register = ((CheckBox)findViewById(R.id.checkBox_register));
         CheckBox login = ((CheckBox)findViewById(R.id.checkBox_login));
 
-        MyDBContract.MyDbHelper mdbh = new MyDBContract.MyDbHelper(getApplicationContext());
-        SQLiteDatabase db = mdbh.getWritableDatabase();
-        SQLiteDatabase rdb = mdbh.getReadableDatabase();
-        ContentValues values = new ContentValues();
-
         //if register is checked
         if(register.isChecked()){
             final String username = ((EditText)findViewById(R.id.editText_username)).getText().toString();
@@ -113,8 +108,6 @@ public class LoginActivity extends AppCompatActivity {
     private void register(final String username, final String password){
 
         RequestQueue queue = Volley.newRequestQueue(this);
-       // Toast.makeText(LoginActivity.this, "PASSWORD " + password, Toast.LENGTH_LONG).show();
-        //Toast.makeText(LoginActivity.this, "USERNAME " + username, Toast.LENGTH_LONG).show();
 
         String url = Constants.root_url + "register_query.php?username="+username+"&password="+password;
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,

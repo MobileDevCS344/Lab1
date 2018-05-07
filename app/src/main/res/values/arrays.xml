@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <integer-array name="my_cards">
-        <item>@drawable/c1</item>
+        <item>@drawable/c1</item> //clovers start at i=0
         <item>@drawable/c2</item>
         <item>@drawable/c3</item>
         <item>@drawable/c4</item>
@@ -13,8 +13,8 @@
         <item>@drawable/cj</item>
         <item>@drawable/ck</item>
         <item>@drawable/cq</item>
-        <item>@drawable/ct</item>
-        <item>@drawable/d1</item>
+        <item>@drawable/ct</item> //clovers end at i = 12
+        <item>@drawable/d1</item> // diamonds start at i = 13
         <item>@drawable/d2</item>
         <item>@drawable/d3</item>
         <item>@drawable/d4</item>
@@ -26,8 +26,8 @@
         <item>@drawable/dj</item>
         <item>@drawable/dk</item>
         <item>@drawable/dq</item>
-        <item>@drawable/dt</item>
-        <item>@drawable/h1</item>
+        <item>@drawable/dt</item> //diamonds end at i = 25
+        <item>@drawable/h1</item> //hearts start at i = 26
         <item>@drawable/h2</item>
         <item>@drawable/h3</item>
         <item>@drawable/h4</item>
@@ -39,8 +39,8 @@
         <item>@drawable/hj</item>
         <item>@drawable/hk</item>
         <item>@drawable/hq</item>
-        <item>@drawable/ht</item>
-        <item>@drawable/s1</item>
+        <item>@drawable/ht</item> //hearts end at i = 38
+        <item>@drawable/s1</item> //spades start at i = 39
         <item>@drawable/s2</item>
         <item>@drawable/s3</item>
         <item>@drawable/s4</item>
@@ -52,6 +52,6 @@
         <item>@drawable/sj</item>
         <item>@drawable/sk</item>
         <item>@drawable/sq</item>
-        <item>@drawable/st</item>
+        <item>@drawable/st</item> //spades end at i = 51
     </integer-array>
 </resources>
