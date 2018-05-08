@@ -119,7 +119,7 @@
             android:id="@+id/textView_cardRem"
             android:layout_width="130dp"
             android:layout_height="match_parent"
-            android:text="@string/remaining"
+            android:text="@string/score"
             android:textSize="18sp" />
 
         <TableLayout
@@ -141,15 +141,14 @@
                 android:layout_height="match_parent">
 
                 <TextView
-                    android:id="@+id/textView_p1CardRemLabel"
+                    android:id="@+id/textView_p1ScoreLabel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
 
                 <TextView
-                    android:id="@+id/textView_p1CardRem"
+                    android:id="@+id/textView_p1Score"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/cardRem" />
+                    android:layout_height="wrap_content" />
 
             </TableRow>
 
@@ -160,16 +159,14 @@
                 tools:layout_editor_absoluteY="8dp">
 
                 <TextView
-                    android:id="@+id/textView_p2CardRemLabel"
+                    android:id="@+id/textView_p2ScoreLabel"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/player2" />
+                    android:layout_height="wrap_content" />
 
                 <TextView
-                    android:id="@+id/textView_p2CardRem"
+                    android:id="@+id/textView_p2Score"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/cardRem" />
+                    android:layout_height="wrap_content" />
             </TableRow>
 
         </TableLayout>

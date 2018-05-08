@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private boolean tableVisible, firstMathRun = true, firstHand = true;
     private LinearLayoutFragment mathfragment;
     private TableFragment tableFragment;
-    private String problem, playerId = "";
+    private String problem, playerId = "", score;
     private Drawable table1Image, table2Image;
     private RequestQueue queue ;
     private int[] handArray;
@@ -72,15 +72,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         Intent intent = getIntent();
         username = intent.getStringExtra(Constants.key_username);
-        ((TextView)findViewById(R.id.textView_p1Label)).setText(username);
-        ((TextView)findViewById(R.id.textView_p1CardRemLabel)).setText(username);
-        queue = Volley.newRequestQueue(this) ;
 
+        queue = Volley.newRequestQueue(this) ;
+        score = "" ;
         handArray = new int[3];
 
-        //random image generator
-      //  generateRandomImg();
-
+        //get players id
         String url = Constants.root_url + "get_player_id.php?username=" + username ;
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
@@ -98,6 +95,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         ) ;
 
         queue.add(stringRequest) ;
+
+        if(playerId.equals("1"))
+        {
+            ((TextView) findViewById(R.id.textView_p1ScoreLabel)).setText(username) ;
+            ((TextView)findViewById(R.id.textView_p1Label)).setText(username);
+            ((TextView)findViewById(R.id.textView_p1CardRemLabel)).setText(username);
+        }
+        else
+        {
+            ((TextView) findViewById(R.id.textView_p2ScoreLabel)).setText(username) ;
+            ((TextView)findViewById(R.id.textView_p2Label)).setText(username);
+            ((TextView)findViewById(R.id.textView_p2CardRemLabel)).setText(username);
+        }
 
         c1 = (ImageView) findViewById(R.id.imageView_card1);
         c2 = (ImageView) findViewById(R.id.imageView_card2);
@@ -118,8 +128,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             //set bidding boolean to true because we are initially bidding
             tableVisible = true;
             //uncomment active count after testing
-            //getActiveCount();
-            getHand() ;
+            getActiveCount();
+            //getHand() ;
             firstHand = false ;
         }
 
@@ -526,7 +536,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         {
                             getActiveCount();
                         }
-
+                        getScore();
                         getHand() ;
                     }
                 },
@@ -544,7 +554,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void getHand()
     {
       //  RequestQueue queue = Volley.newRequestQueue(this) ;
-        String url = Constants.root_url + "get_hand.php?username=" + username ;
+        String url = Constants.root_url + "get_first_hand.php?username=" + username ;
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
@@ -597,11 +607,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Toast.makeText(MainActivity.this, response + " in updatedCardPlayed", Toast.LENGTH_SHORT).show();
                         if(response.equals("Error"))
                         {
                             Toast.makeText(MainActivity.this, "Server error.", Toast.LENGTH_SHORT).show(); ;
                         }
+
+                        checkHowManyCardsPlayed() ;
                     }
                 },
                 new Response.ErrorListener() {
@@ -637,11 +648,64 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     }
                 }
         ) ;
+
+        queue.add(stringRequest) ;
     }
 
     public void checkRoundWinner()
     {
-        //do something
+        String url = Constants.root_url + "determine_round_winner.php" ;
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+
+                        getScore() ;
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+                    }
+                }
+        ) ;
+
+        queue.add(stringRequest) ;
+    }
+
+    public void getScore()
+    {
+        String url = Constants.root_url + "get_score.php?username=" + username ;
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        score = response ;
+                        updateScoreBoard() ;
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+                    }
+                }
+        ) ;
+
+        queue.add(stringRequest) ;
+    }
+
+    public void updateScoreBoard()
+    {
+        if(playerId.equals("1"))
+        {
+            ((TextView)findViewById(R.id.textView_p1Score)).setText(score) ;
+        }
+        else
+        {
+            ((TextView)findViewById(R.id.textView_p2Score)).setText(score) ;
+        }
     }
 }
 

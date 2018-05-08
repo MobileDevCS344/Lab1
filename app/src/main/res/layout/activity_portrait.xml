@@ -8,14 +8,15 @@
 
     <LinearLayout
         android:id="@+id/cardCont"
-        android:layout_width="355dp"
-        android:layout_height="192dp"
-        android:layout_marginBottom="60dp"
-        android:layout_marginRight="14dp"
+        android:layout_width="378dp"
+        android:layout_height="252dp"
+        android:layout_marginBottom="56dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
         android:orientation="horizontal"
         android:weightSum="1"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintRight_toRightOf="parent">
+        app:layout_constraintEnd_toEndOf="parent">
 
         <ImageView
             android:id="@+id/imageView_card1"
@@ -47,10 +48,9 @@
 
     <LinearLayout
         android:id="@+id/cardRemCont"
-        android:layout_width="357dp"
+        android:layout_width="386dp"
         android:layout_height="46dp"
         android:layout_marginBottom="8dp"
-        android:layout_marginEnd="14dp"
         android:layout_marginRight="12dp"
         android:layout_marginTop="8dp"
         android:orientation="horizontal"
@@ -80,15 +80,14 @@
                 android:layout_height="match_parent">
 
                 <TextView
-                    android:id="@+id/textView_p1CardRemLabel"
+                    android:id="@+id/textView_p1ScoreLabel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
 
                 <TextView
-                    android:id="@+id/textView_p1CardRem"
+                    android:id="@+id/textView_p1Score"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/cardRem" />
+                    android:layout_height="wrap_content" />
             </TableRow>
 
             <TableRow
@@ -96,16 +95,14 @@
                 android:layout_height="match_parent">
 
                 <TextView
-                    android:id="@+id/p2CardRemLabel"
+                    android:id="@+id/textView_p2ScoreLabel"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/player2" />
+                    android:layout_height="wrap_content" />
 
                 <TextView
-                    android:id="@+id/textView_p2CardRem"
+                    android:id="@+id/textView_p2Score"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/cardRem" />
+                    android:layout_height="wrap_content" />
             </TableRow>
         </TableLayout>
 
@@ -113,15 +110,12 @@
 
     <LinearLayout
         android:id="@+id/idcontainer"
-        android:layout_width="348dp"
-        android:layout_height="23dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="88dp"
+        android:layout_width="379dp"
+        android:layout_height="24dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
         android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -137,44 +131,19 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/player2"
             android:textAlignment="center" />
     </LinearLayout>
 
     <FrameLayout
         android:id="@+id/fragment_container"
-        android:layout_width="347dp"
-        android:layout_height="123dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginLeft="12dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginStart="12dp"
-        android:layout_marginTop="4dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.411"
+        android:layout_width="379dp"
+        android:layout_height="216dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/idcontainer">
 
     </FrameLayout>
-
-    <LinearLayout
-        android:id="@+id/score_container"
-        android:layout_width="368dp"
-        android:layout_height="56dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginTop="16dp"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toTopOf="@+id/idcontainer"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0">
-
-        <TextView
-            android:id="@+id/textView_mathhistory"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>
