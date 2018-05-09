@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private boolean tableVisible, firstMathRun = true, firstHand = true;
     private LinearLayoutFragment mathfragment;
     private TableFragment tableFragment;
-    private String problem, playerId = "", score;
+    private String problem, playerId = "", score, opponentScore;
     private Drawable table1Image, table2Image;
     private RequestQueue queue ;
     private int[] handArray;
@@ -80,6 +80,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         queue = Volley.newRequestQueue(this) ;
 
         score = "" ;
+        opponentScore = "" ;
         handArray = new int[3];
         //Toast.makeText(MainActivity.this, "PlayerId " + playerId, Toast.LENGTH_SHORT).show();
         //get players id
@@ -111,6 +112,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         table2Image = null;
 
         new UpdatePlayerTags().execute( ) ;
+        //getOpponentPlay();
+        //new UpdateOpponentPlay().execute() ;
     }
 
     @Override
@@ -130,6 +133,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         outState.putString("currentMathProblem", problem);
         outState.putInt("correctAnswer", correct_answer);
         outState.putBoolean("firtHand", firstHand);
+        outState.putBoolean("boolTableVisible", tableVisible) ;
 
         //put all the images in a save instance state
         ImageView c1ImageView = ((ImageView)findViewById(R.id.imageView_card1));
@@ -183,6 +187,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             mathHistory = savedInstanceState.getStringArrayList("mathHistory");
             problem = savedInstanceState.getString("currentMathProblem");
             firstHand = savedInstanceState.getBoolean("firstHand") ;
+            tableVisible = savedInstanceState.getBoolean("boolTableVisible") ;
 
             if (getResources().getConfiguration().orientation ==
                     Configuration.ORIENTATION_LANDSCAPE){
@@ -201,7 +206,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 mathHistSb.append(temp);
             }
 
-            ((TextView) findViewById(R.id.textView_mathhistory)).setText(mathHistSb);
+
+            //((TextView) findViewById(R.id.textView_mathhistory)).setText(mathHistSb);
 
             //keep images the same in clickable table
             Bitmap c1_bitmap = savedInstanceState.getParcelable("c1Image");
@@ -510,13 +516,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Toast.makeText(MainActivity.this, "Active players: " + response , Toast.LENGTH_SHORT).show();
-                        while(!response.equals("2"))
+                      //  Toast.makeText(MainActivity.this, "Active players: " + response , Toast.LENGTH_SHORT).show();
+                        if(!response.equals("2"))
                         {
                             getActiveCount();
                         }
-                        getScore();
-                        getHand() ;
+                        else {
+                            getScore();
+                           // getOpponentScore();
+                            getHand();
+                        }
                     }
                 },
                 new Response.ErrorListener() {
@@ -583,16 +592,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
       //  RequestQueue queue = Volley.newRequestQueue(this) ;
         String url = Constants.root_url + "update_card_played.php?username=" + username + "&index="
                 + index ;
+
+        Toast.makeText(this, "INDEX " + index, Toast.LENGTH_SHORT).show(); ;
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        if(response.equals("Error"))
+                        if(!response.equals("Successful"))
                         {
                             Toast.makeText(MainActivity.this, "Server error.", Toast.LENGTH_SHORT).show(); ;
                         }
 
-                        checkHowManyCardsPlayed() ;
+                      //  checkHowManyCardsPlayed() ;
                     }
                 },
                 new Response.ErrorListener() {
@@ -614,7 +625,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        while(!response.equals("0"))
+                        if(!response.trim().equals("0"))
                         {
                             checkHowManyCardsPlayed();
                         }
@@ -632,6 +643,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         queue.add(stringRequest) ;
     }
+
 
     public void checkRoundWinner()
     {
@@ -653,6 +665,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         }
                         else {
                             getScore();
+                            getOpponentScore();
                             getHand() ;
                         }
                     }
@@ -691,15 +704,52 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         queue.add(stringRequest) ;
     }
 
+    public void getOpponentScore()
+    {
+        //  RequestQueue queue = Volley.newRequestQueue(this) ;
+        String url = Constants.root_url + "get_score.php?username=" + otherPlayerUsername ;
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        opponentScore = response ;
+                        updateOpponentScoreBoard() ;
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+                    }
+                }
+        ) ;
+
+        queue.add(stringRequest) ;
+    }
+
     public void updateScoreBoard()
     {
         if(playerId.equals("1"))
         {
-            ((TextView)findViewById(R.id.textView_p1Score)).setText(score) ;
+            ((TextView)findViewById(R.id.textView_p1Score)).setText(": " + score) ;
+
         }
         else
         {
-            ((TextView)findViewById(R.id.textView_p2Score)).setText(score) ;
+            ((TextView)findViewById(R.id.textView_p2Score)).setText(": " + score) ;
+        }
+    }
+
+    public void updateOpponentScoreBoard()
+    {
+        if(playerId.equals("1"))
+        {
+            ((TextView)findViewById(R.id.textView_p2Score)).setText(": " + opponentScore) ;
+
+        }
+        else
+        {
+            ((TextView)findViewById(R.id.textView_p1Score)).setText(": " + opponentScore) ;
         }
     }
 
@@ -735,6 +785,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                 ((TextView) findViewById(R.id.textView_p1ScoreLabel)).setText(otherPlayerUsername);
                                 ((TextView) findViewById(R.id.textView_p1Label)).setText(otherPlayerUsername);
                             }
+
+                            getOpponentScore();
+                            getOpponentPlay() ;
                         }
                     }
 
@@ -776,6 +829,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             }
 
                             getOtherPlayerId();
+                            getActiveCount();
+
+                         //   new UpdateOpponentPlay().execute() ;
+
                         }
                     },
                     new Response.ErrorListener() {
@@ -799,6 +856,47 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         }
     }
+
+    public void getOpponentPlay()
+    {
+        String url = Constants.root_url + "get_opponent_play.php?username=" + otherPlayerUsername ;
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.d("RESPOSNE", response) ;
+                        Toast.makeText(MainActivity.this, response + " OPPONENT " + otherPlayerUsername+ " PLAY ", Toast.LENGTH_LONG).show();
+                        if(response.equals(""))
+                        {
+                            getOpponentPlay();
+                        }
+                      /*  else
+                        {
+                            ImageView table1 = (ImageView) findViewById(R.id.imageView_p1Play);
+                            ImageView table2 = (ImageView) findViewById(R.id.imageView_p2Play);
+                            TypedArray cards = getResources().obtainTypedArray(R.array.my_cards);
+                            if(playerId.equals("1")){
+                                int card = cards.getResourceId(Integer.parseInt(response), 0);
+                                table2.setImageResource(card);
+                            }
+                            else {
+                                int card = cards.getResourceId(Integer.parseInt(response), 0);
+                                table1.setImageResource(card);
+                            }
+                        } */
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+                    }
+                }
+        ) ;
+
+        queue.add(stringRequest) ;
+    }
+
 }
 
 
