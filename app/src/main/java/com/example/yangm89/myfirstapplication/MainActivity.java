@@ -12,6 +12,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.media.Image;
 
+import android.os.AsyncTask;
 import android.os.Parcelable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -40,6 +41,7 @@ import com.android.volley.toolbox.Volley;
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Random;
 
 
@@ -48,7 +50,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ImageView c1, c2, c3;
     private ArrayList<String> chatHistory, mathHistory;
     private int correct_answer = -1, player_answer = -2;
-    private String username;
+    private String username, otherPlayerUsername;
     private boolean tableVisible, firstMathRun = true, firstHand = true;
     private LinearLayoutFragment mathfragment;
     private TableFragment tableFragment;
@@ -70,44 +72,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         getWindow().setSoftInputMode(
                 WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 
+
         Intent intent = getIntent();
         username = intent.getStringExtra(Constants.key_username);
+        otherPlayerUsername = "" ;
 
         queue = Volley.newRequestQueue(this) ;
+
         score = "" ;
         handArray = new int[3];
-
+        //Toast.makeText(MainActivity.this, "PlayerId " + playerId, Toast.LENGTH_SHORT).show();
         //get players id
-        String url = Constants.root_url + "get_player_id.php?username=" + username ;
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        playerId = response ;
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-
-                    }
-                }
-        ) ;
-
-        queue.add(stringRequest) ;
-
-        if(playerId.equals("1"))
-        {
-            ((TextView) findViewById(R.id.textView_p1ScoreLabel)).setText(username) ;
-            ((TextView)findViewById(R.id.textView_p1Label)).setText(username);
-            ((TextView)findViewById(R.id.textView_p1CardRemLabel)).setText(username);
-        }
-        else
-        {
-            ((TextView) findViewById(R.id.textView_p2ScoreLabel)).setText(username) ;
-            ((TextView)findViewById(R.id.textView_p2Label)).setText(username);
-            ((TextView)findViewById(R.id.textView_p2CardRemLabel)).setText(username);
-        }
 
         c1 = (ImageView) findViewById(R.id.imageView_card1);
         c2 = (ImageView) findViewById(R.id.imageView_card2);
@@ -128,19 +103,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             //set bidding boolean to true because we are initially bidding
             tableVisible = true;
             //uncomment active count after testing
-            getActiveCount();
             //getHand() ;
             firstHand = false ;
         }
 
         table1Image = null;
         table2Image = null;
+
+        new UpdatePlayerTags().execute( ) ;
     }
 
     @Override
     public void onStart(){
 
         super.onStart();
+
+
     }
 
     @Override
@@ -526,12 +504,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public void getActiveCount()
     {
-      //  RequestQueue queue = Volley.newRequestQueue(this) ;
+        //RequestQueue queue = Volley.newRequestQueue(this) ;
         String url = Constants.root_url + "check_active.php";
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
+                        Toast.makeText(MainActivity.this, "Active players: " + response , Toast.LENGTH_SHORT).show();
                         while(!response.equals("2"))
                         {
                             getActiveCount();
@@ -553,8 +532,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public void getHand()
     {
-      //  RequestQueue queue = Volley.newRequestQueue(this) ;
-        String url = Constants.root_url + "get_first_hand.php?username=" + username ;
+        //RequestQueue queue = Volley.newRequestQueue(this) ;
+        String url = Constants.root_url + "get_hand.php?username=" + username ;
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
@@ -601,6 +580,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public void updateCardPlayedInDB(String index)
     {
+      //  RequestQueue queue = Volley.newRequestQueue(this) ;
         String url = Constants.root_url + "update_card_played.php?username=" + username + "&index="
                 + index ;
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
@@ -628,6 +608,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public void checkHowManyCardsPlayed()
     {
+       // RequestQueue queue = Volley.newRequestQueue(this) ;
         String url = Constants.root_url + "how_many_cards_played.php" ;
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
@@ -654,13 +635,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public void checkRoundWinner()
     {
+      //  RequestQueue queue = Volley.newRequestQueue(this) ;
         String url = Constants.root_url + "determine_round_winner.php" ;
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
+                        if(response.equals("Tie"))
+                        {
+                            mathfragment = new LinearLayoutFragment();
+                            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                            fragmentTransaction.replace(R.id.fragment_container, mathfragment);
+                            fragmentTransaction.commit();
 
-                        getScore() ;
+                            //set table visibility tracker to false
+                            tableVisible = false ;
+                        }
+                        else {
+                            getScore();
+                            getHand() ;
+                        }
                     }
                 },
                 new Response.ErrorListener() {
@@ -676,6 +670,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public void getScore()
     {
+      //  RequestQueue queue = Volley.newRequestQueue(this) ;
         String url = Constants.root_url + "get_score.php?username=" + username ;
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
@@ -705,6 +700,103 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         else
         {
             ((TextView)findViewById(R.id.textView_p2Score)).setText(score) ;
+        }
+    }
+
+    public void getOtherPlayerId()
+    {
+        String id;
+        if(playerId.equals("1"))
+        {
+            id = "2" ;
+        }
+        else
+        {
+            id = "1" ;
+        }
+
+        //get other player username
+        String url = Constants.root_url + "get_other_player_id.php?id=" +  id;
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        if(response.equals(""))
+                        {
+                            getOtherPlayerId();
+                        }
+                        else {
+                            otherPlayerUsername = response;
+
+                            if (playerId.equals("1")) {
+                                ((TextView) findViewById(R.id.textView_p2ScoreLabel)).setText(otherPlayerUsername);
+                                ((TextView) findViewById(R.id.textView_p2Label)).setText(otherPlayerUsername);
+                            } else {
+                                ((TextView) findViewById(R.id.textView_p1ScoreLabel)).setText(otherPlayerUsername);
+                                ((TextView) findViewById(R.id.textView_p1Label)).setText(otherPlayerUsername);
+                            }
+                        }
+                    }
+
+
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+                    }
+                }
+        ) ;
+
+        queue.add(stringRequest) ;
+    }
+
+    private class UpdatePlayerTags extends AsyncTask<Integer, Void, Integer>
+    {
+        @Override
+        protected Integer doInBackground(Integer... v) {
+         //   RequestQueue queue = Volley.newRequestQueue(MainActivity.this) ;
+
+            String url = Constants.root_url + "get_player_id.php?username=" + username ;
+            StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            playerId = response.trim() ;
+
+                            if(response.trim().equals("1"))
+                            {
+                                ((TextView) findViewById(R.id.textView_p1ScoreLabel)).setText(username) ;
+                                ((TextView)findViewById(R.id.textView_p1Label)).setText(username);
+                            }
+                            else
+                            {
+                                ((TextView) findViewById(R.id.textView_p2ScoreLabel)).setText(username) ;
+                                ((TextView)findViewById(R.id.textView_p2Label)).setText(username);
+                            }
+
+                            getOtherPlayerId();
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+
+                        }
+                    }
+            ) ;
+
+            queue.add(stringRequest) ;
+
+
+            //change this
+            return 1 ;
+        }
+
+
+        protected  void onPostExecute(Void result)
+        {
+
         }
     }
 }
