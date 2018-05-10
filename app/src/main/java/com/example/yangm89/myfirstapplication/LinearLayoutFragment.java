@@ -23,6 +23,7 @@ import java.util.Random;
 public class LinearLayoutFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
     private String problem ;
+    private int mathProblemCount ;
 
     public LinearLayoutFragment() {
         //required empty public constructor
@@ -45,16 +46,10 @@ public class LinearLayoutFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
-        if(mListener.isFirstMathRun()){
-            mListener.generateProblem();
-            problem = mListener.getProblem();
-            ((TextView)getActivity().findViewById(R.id.textView_mathProb)).setText(problem);
-            mListener.setFirstMathRun(false);
-        }
-        else {
-            problem = mListener.getProblem();
-            ((TextView)getActivity().findViewById(R.id.textView_mathProb)).setText(problem);
-        }
+        mathProblemCount = 0 ;
+        problem = mListener.getProblem(mathProblemCount);
+        ((TextView)getActivity().findViewById(R.id.textView_mathProb)).setText(problem);
+
 
 
         ((ImageView) getActivity().findViewById(R.id.imageView_card3)).setOnClickListener(null);
@@ -67,14 +62,15 @@ public class LinearLayoutFragment extends Fragment {
                 if(!((EditText) getActivity().findViewById(R.id.editText_answer)).getText().toString().equals("")){
                     int player_answer = Integer.parseInt(((EditText)getActivity().findViewById(R.id.editText_answer)).getText().toString());
                     ((EditText)getActivity().findViewById(R.id.editText_answer)).setText("");
-                    if(player_answer == mListener.getCorrectAnswer()){
-                        mListener.addToMathHistory(mListener.getProblem(), mListener.getCorrectAnswer() );
+                    if(player_answer == mListener.getCorrectAnswer(mathProblemCount)){
                         String math = mListener.updateMathHistory();
                        ((TextView) getActivity().findViewById(R.id.textView_mathhistory)).setText(math);
                         mListener.setPlayerAnswer(player_answer);
-                        mListener.generateProblem();
-                        problem = mListener.getProblem();
-                        ((TextView)getActivity().findViewById(R.id.textView_mathProb)).setText(problem);
+                        if(mathProblemCount < 3) {
+                            mathProblemCount++;
+                            problem = mListener.getProblem(mathProblemCount);
+                            ((TextView) getActivity().findViewById(R.id.textView_mathProb)).setText(problem);
+                        }
                     }
                 }
 
@@ -104,14 +100,13 @@ public class LinearLayoutFragment extends Fragment {
 
     public interface OnFragmentInteractionListener {
         //3 - Ensure the activity implements this activity
-        void generateProblem();
-        int getCorrectAnswer();
+        int getCorrectAnswer(int i);
         void setPlayerAnswer(int answer);
         String updateMathHistory();
         boolean isFirstMathRun();
         void setFirstMathRun(boolean b);
         void addToMathHistory(String h, int test_answer);
-        String getProblem();
+        String getProblem(int i);
     }
 
 
